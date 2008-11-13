@@ -1,0 +1,9 @@
+; $Id: simplemenu.info,v 1.4.2.2 2007/06/18 23:07:03 dww Exp $
+name = SimpleMenu
+description = Creates a menu bar that is displayed at the top of every page.
+
+; Information added by drupal.org packaging script on 2008-01-26
+version = "5.x-5.0"
+project = "simplemenu"
+datestamp = "1201389908"
+

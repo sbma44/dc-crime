@@ -1,0 +1,10 @@
+; $Id$
+name = jQuery Update
+description = Updates Drupal to use the latest version of jQuery.
+package = User Interface
+
+; Information added by drupal.org packaging script on 2008-07-16
+version = "5.x-2.0"
+project = "jquery_update"
+datestamp = "1216173310"
+

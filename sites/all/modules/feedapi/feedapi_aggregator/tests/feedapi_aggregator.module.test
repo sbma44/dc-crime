@@ -1,0 +1,101 @@
+<?php
+// $Id: feedapi_aggregator.module.test,v 1.1.2.1 2008/09/08 08:06:17 aronnovak Exp $
+
+/**
+ * Class for testing feedapi_aggregator.
+ * It also tests FeedAPI and Common Syndication Parser.
+ */
+class FeedAPI_Aggregator_Tests extends DrupalTestCase {
+  
+  function get_info() {
+    return array('name' => 'FeedAPI Aggregator basic functions', 'desc' => "Refresh a feed and find out if it's okay. Uses Common Syndication Parser for parsing and downloading." , 'group' => 'FeedAPI');
+  }
+
+  /**
+   * Add a content-type, create a feed and refresh it.
+   * Check if everything seems ok
+   * Delete the feed
+   * Check if the rubbish is purged as well.
+   * @todo currently it doesn't test the categorizing facility of feedapi_aggregator
+   */
+  function testFeedAPI_Aggregator_Refresh_Feed() {
+    
+    // Create a new content-type for creating the feed node
+    $info->type = 'aggreg_'. $this->randomName();
+    $info->name = 'Feed'. str_replace('_', ' ', $this->randomName());
+    $info->description = t('Aggregates RSS or Atom feeds.');
+    $info->module = 'node';
+    $info->has_title = TRUE;
+    $info->title_label = t('Title');
+    $info->has_body = TRUE;
+    $info->body_label = t('Body');
+    $info->min_word_count = 0;
+    $info->custom = TRUE;
+    node_type_save($info);
+    
+    // Adding default FeedAPI settings
+    variable_set('feedapi_settings_'. $info->type, unserialize('a:3:{s:7:"enabled";s:1:"1";s:7:"parsers";a:2:{s:16:"parser_simplepie";a:3:{s:7:"enabled";s:1:"0";s:6:"weight";s:1:"0";s:4:"test";s:1:"3";}s:25:"parser_common_syndication";a:3:{s:7:"enabled";s:1:"1";s:6:"weight";s:2:"-2";s:6:"tester";s:1:"3";}}s:10:"processors";a:2:{s:12:"feedapi_node";a:4:{s:6:"weight";s:1:"0";s:12:"content_type";s:5:"story";s:9:"node_date";s:4:"feed";s:7:"promote";s:1:"3";}s:18:"feedapi_aggregator";a:3:{s:7:"enabled";s:1:"1";s:6:"weight";s:1:"0";s:5:"block";s:1:"3";}}}'));
+
+    // Login with a user who has FeedAPI rights
+    $user = $this->drupalCreateUserRolePerm(array('administer feedapi', 'advanced feedapi options', 'administer nodes', 'access news feeds', "create $info->type content"));
+    $this->drupalLoginUser($user);
+    
+    // Create the feed node
+    // Make the URL unique. It's not impossible that someone add this feed URL to the DB prior.
+    $feed_url = "http://novaak.net/rss.xml?". $this->randomName();
+    $edit = array(
+        'feedapi[feedapi_url]' => $feed_url,
+    );
+    $this->drupalPostRequest('node/add/'. $info->type, $edit, 'Submit');
+    $this->assertText(t('Link to site'), 'The feed node is created.');
+    
+    // Check if the entry is in the DB
+    $nid = db_result(db_query("SELECT nid FROM {feedapi} WHERE url = '%s'", $feed_url));
+    $this->assertEqual(is_numeric($nid), TRUE, 'The feed node is in the database');
+    $feed_node = node_load(array('nid' => $nid));
+    $this->assertEqual(is_object($feed_node->feed), TRUE, 'The feed can be loaded.');
+
+    // Disable feed item expiring
+    $settings = feedapi_get_settings($info->type, $nid);
+    $settings['items_delete'] = FEEDAPI_NEVER_DELETE_OLD;
+    _feedapi_store_settings(array('nid' => $nid), $settings);
+    
+    // Source page before refreshing 
+    $this->drupalGet(url("aggregator/sources/$nid", NULL, NULL, TRUE));
+    $this->assertText("Currently there is no news item in this category/feed.", 'The source\'s page is empty before refreshing.');
+    
+    // Refresh the feed
+    $this->drupalGet(url("node/$nid/refresh", NULL, NULL, TRUE));
+    $this->assertText("11 new item(s) were saved. 0 existing item(s) were updated", 'The proper number of items were created.');
+    
+    $this->drupalGet(url("aggregator/sources/$nid", NULL, NULL, TRUE));
+    $this->assertText("This is the Openads presentation that we missed in Barcelona", 'The third news title can be read at the source page.');
+    
+    // Check the feed items
+    $num_of_items = db_result(db_query("SELECT COUNT(*) FROM {feedapi_aggregator_item} WHERE feed_nid = %d", $nid));
+    $this->assertEqual($num_of_items, 11, 'The proper number of items can be found in the database.');
+    
+    // Admin overview page loads and the feed can be found there with the correct number of items
+    $this->drupalGet(url("admin/content/feed", NULL, NULL, TRUE));
+    $this->assertText('DrupalCon Barcelona 2007 -', 'The admin overview page contains the feed title.');
+    
+    // Temporary solution. Now purging is commented out in feedapi.module because of possible timeouts
+    feedapi_invoke('purge', $feed_node->feed);
+    // Remove the unwanted rubbish
+    node_delete($nid);
+    
+    // Check if the news items are deleted as well
+    $item_remain = db_result(db_query("SELECT COUNT(*) FROM {feedapi_aggregator_item} WHERE feed_nid = %d", $nid));
+    $this->assertEqual($item_remain, 0, 'All the news items are deleted from the database.');
+    
+    node_types_rebuild();
+    // Remove temporary content-type
+    node_type_delete($info->type);
+    
+    // Make sure that the variable if loaded from the DB
+    variable_init();
+    
+    // Check if the type deletion occurs variable deletion
+    $this->assertIdentical(FALSE, variable_get('feedapi_settings_'. $info->type, FALSE), 'The content-type\'s setting variable is successfully deleted.');
+  }
+}

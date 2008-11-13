@@ -1,0 +1,57 @@
+<?php
+// $Id: panels_views.install,v 1.1.2.9 2008/07/13 22:42:31 sdboyer Exp $
+
+
+/**
+ * Implementation of hook_install().
+ */
+function panels_views_install() {
+  // This is a poor man's schema implementation ala Drupal 6.
+
+  // The documentation says this shouldn't be necessary but sometimes the
+  // .module file is not actually loaded at this time, so we have to load it.
+  if (!function_exists('panels_views_pane_fields')) {
+    require_once drupal_get_path('module', 'panels_views') . '/panels_views.module';
+  }
+
+  $fields = panels_views_pane_fields();
+  $sql = "";
+  foreach ($fields as $field => $data) {
+    if ($sql) {
+      $sql .= ', ';
+    }
+    // offset is a reserved word in postgres, needs to be quoted
+    if ($field == "offset" && $GLOBALS['db_type'] == 'pgsql') {
+      $field = '"offset"';
+    }
+    $sql .= $field . ' ' . $data['definition'];
+  }
+  db_query("CREATE TABLE {panels_views} ($sql) /*!40100 DEFAULT CHARACTER SET utf8 */");
+}
+
+/**
+ * Add columns for custom "more" text.
+ */
+function panels_views_update_5100() {
+  $ret = array();
+  switch ($GLOBALS['db_type']) {
+    case 'mysql':
+    case 'mysqli':
+      $ret[] = update_sql("ALTER TABLE {panels_views} ADD more_text varchar(255) AFTER more_link");
+      $ret[] = update_sql("ALTER TABLE {panels_views} ADD allow_more_text integer AFTER allow_more_link");
+      break;
+    case 'pgsql':
+      db_add_column($ret, 'panels_views', 'more_text', 'varchar(255)', array());
+      db_add_column($ret, 'panels_views', 'allow_more_text', 'integer', array());
+      break;
+  }
+  return $ret;
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function panels_views_uninstall() {
+  db_query("DROP TABLE IF EXISTS {panels_views}");
+}
+

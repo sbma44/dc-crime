@@ -1,0 +1,1074 @@
+# $Id: vi.po,v 1.1.4.7 2008/05/06 23:27:17 thehong Exp $
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  field.php,v 1.7.2.8 2007/03/01 00:20:35 yched
+#  text.module,v 1.41.2.12 2007/03/12 00:50:34 yched
+#  number.module,v 1.34.2.20 2007/03/01 04:51:54 yched
+#  content_admin.inc,v 1.28.2.35 2007/04/09 14:12:47 yched
+#  fieldgroup.module,v 1.1.4.31 2007/03/27 12:27:42 fago
+#  content_copy.module,v 1.1.2.7 2007/03/11 23:39:49 yched
+#  content.module,v 1.90.2.39 2007/03/11 23:39:49 yched
+#  nodereference.module,v 1.39.2.17 2007/03/05 21:58:47 yched
+#  userreference.module,v 1.30.2.16 2007/03/05 21:58:47 yched
+#  content_crud.inc,v 1.4.2.11 2007/01/26 12:34:56 karens
+#  content_views.inc,v 1.2.2.14 2007/04/09 14:12:47 yched
+#  optionwidgets.module,v 1.10.2.8 2007/03/29 12:52:13 yched
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: CCK 5.x-1.7.x\n"
+"POT-Creation-Date: 2008-03-24 03:11+0100\n"
+"PO-Revision-Date: 2008-05-07 06:20+0700\n"
+"Last-Translator: The Hong <thehong@toila.net>\n"
+"Language-Team: Vietnamese Translation Team <thehong@toila.net>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"X-Poedit-Language: Vietnamese\n"
+"X-Poedit-Country: VIETNAM\n"
+
+#: field.php:36
+#: number.module:14
+msgid "Integer"
+msgstr "Số nguyên"
+
+#: field.php:37
+#: number.module:15
+msgid "Decimal"
+msgstr "Số thập phân"
+
+#: field.php:109
+#: text.module:34
+msgid "Maximum length"
+msgstr "Độ dài tối đa"
+
+#: field.php:112
+#: text.module:37
+msgid "The maximum length of the field in characters. Leave blank for an unlimited size."
+msgstr "Số lượng ký tự tối đa của trường dữ liệu. Bỏ trống nếu muốn không giới hạn."
+
+#: field.php:220
+#: number.module:144
+#: text.module:167
+msgid "Illegal value for %name."
+msgstr "Giá trị %name không hợp lệ."
+
+#: field.php:242
+#: text.module:190
+#: userreference.module:98
+msgid "Default"
+msgstr "Mặc định"
+
+#: field.php:246
+#: text.module:25;194
+#: userreference.module:102
+msgid "Plain text"
+msgstr "Bản văn thuần"
+
+#: field.php:250
+#: text.module:198
+msgid "Trimmed"
+msgstr ""
+
+#: field.php:320
+#: number.module:254
+#: text.module:247
+msgid "Text Field"
+msgstr "Trường dữ liệu bản văn"
+
+#: field.php:358
+#: text.module:262
+msgid "Rows"
+msgstr "Số dòng"
+
+#: field.php:366
+#: text.module:270
+msgid "\"Rows\" must be a positive integer."
+msgstr "\"Số dòng\" phải là số dương."
+
+#: content_admin.inc:15
+msgid "Field name"
+msgstr "Tên trường dữ liệu"
+
+#: content_admin.inc:15;529
+msgid "Field type"
+msgstr "Kiểu trường dữ liệu"
+
+#: content_admin.inc:15
+msgid "Used in"
+msgstr "Được sử dụng trong"
+
+#: content_admin.inc:73
+msgid "There are no groups configured for this content type."
+msgstr "Không có nhóm nào được cấu hình cho kiểu nội dung này."
+
+#: content_admin.inc:83;363
+msgid "There are no fields configured for this content type."
+msgstr "Không có trường dữ liệu nào được cấu hình cho kiểu nội dung này."
+
+#: content_admin.inc:108
+msgid "group"
+msgstr "nhóm"
+
+#: content_admin.inc:111;124;149
+msgid "configure"
+msgstr "cấu hình"
+
+#: content_admin.inc:112;125;150
+msgid "remove"
+msgstr "bỏ đi"
+
+#: content_admin.inc:163
+msgid "body"
+msgstr "phần thân"
+
+#: content_admin.inc:184
+msgid "Update"
+msgstr "Cập nhật"
+
+#: content_admin.inc:212;216;376;760
+#: fieldgroup.module:83;511
+msgid "Label"
+msgstr "Nhãn"
+
+#: content_admin.inc:212;216;521
+msgid "Name"
+msgstr "Tên"
+
+#: content_admin.inc:212;216;376
+msgid "Type"
+msgstr "Kiểu"
+
+#: content_admin.inc:212;216
+msgid "Weight"
+msgstr "Độ nặng"
+
+#: content_admin.inc:212
+#: fieldgroup.module:511
+msgid "Group"
+msgstr "Nhóm"
+
+#: content_admin.inc:212;216
+msgid "Operations"
+msgstr "Các thao tác"
+
+#: content_admin.inc:280
+msgid "No fields have been added to this group."
+msgstr "Chưa có trường dữ liệu nào được thêm vào nhóm này."
+
+#: content_admin.inc:285
+msgid "!label (!name)"
+msgstr "!label (!name)"
+
+#: content_admin.inc:320
+msgid "Updated field groups."
+msgstr "Đã cập nhật nhóm các trường dữ liệu."
+
+#: content_admin.inc:331
+msgid "Updated group weights."
+msgstr "Đã cập nhật độ nặng của các nhóm."
+
+#: content_admin.inc:342
+msgid "Updated field weights."
+msgstr "Đã cập nhật độ nặng của các trường dữ liệu."
+
+#: content_admin.inc:371
+#: content_copy.module:164;237
+#: fieldgroup.module:334
+msgid "Submit"
+msgstr "Đệ trình"
+
+#: content_admin.inc:376
+msgid "Field"
+msgstr "Trường dữ liệu"
+
+#: content_admin.inc:411
+msgid "Your settings have been saved."
+msgstr "Các thiết lập của bạn đã được lưu lại"
+
+#: content_admin.inc:421;426
+#: fieldgroup.module:478;486
+msgid "<Hidden>"
+msgstr "<Giấu>"
+
+#: content_admin.inc:424
+#: fieldgroup.module:477
+msgid "Above"
+msgstr "Ở trên"
+
+#: content_admin.inc:425
+msgid "Inline"
+msgstr ""
+
+#: content_admin.inc:451
+#: nodereference.module:148
+msgid "Teaser"
+msgstr "Bản cắt"
+
+#: content_admin.inc:452
+msgid "Full"
+msgstr "Bản đầy đủ"
+
+#: content_admin.inc:483
+msgid "Add existing field"
+msgstr "Thêm trường dữ liệu đã có"
+
+#: content_admin.inc:492
+#: content.module:125
+msgid "Add field"
+msgstr "Thêm trường"
+
+#: content_admin.inc:518
+msgid "Create new field"
+msgstr "Tạo trường dữ liệu mới"
+
+#: content_admin.inc:524
+msgid "The machine-readable name of the field.<br/>Allowed characters : unaccentuated a-z, numbers and _. All other characters will be discarded.<br/>You'll be able to choose a human-readable label for the field on next page"
+msgstr "Tên của trường dữ liệu dành cho máy đọc.<br />Các ký tự cho phép: a-z (không viết in), 0-9 và dấu _. Các ký tự khác đều bị loại bỏ.<br />Bạn sẽ có thể chọn nhãn dễ đọc cho trường ở trang kế"
+
+#: content_admin.inc:537
+msgid "Create field"
+msgstr "Tạo trường dữ liệu"
+
+#: content_admin.inc:549
+msgid "No field modules are enabled. You need to <a href=\"!modules_url\">enable one</a>, such as text.module, before you can add new fields."
+msgstr "Không có module trường dữ liệu nào được kích hoạt. Bạn cần <a href=\"!modules_url\">kích hoạt</a> ít nhất là một, như text.module, trước khi bạn tạo ra các trường mới."
+
+#: content_admin.inc:605
+msgid "Added field %label."
+msgstr "Đã thêm trường dữ liệu %label."
+
+#: content_admin.inc:617
+msgid "The field name %field_name already exists."
+msgstr "Tên trường dữ liệu %field_name đã tồn tại."
+
+#: content_admin.inc:621
+msgid "The field name %field_name is invalid."
+msgstr "Tên trường dữ liệu %field_name không hợp lệ."
+
+#: content_admin.inc:672
+msgid "Created field %label."
+msgstr "Đã tạo trường dữ liệu %label."
+
+#: content_admin.inc:694
+msgid "Are you sure you want to remove the field %field?"
+msgstr "Bạn có chắc là muốn xóa trường dữ liệu %field?"
+
+#: content_admin.inc:696
+msgid "If you have any content left in this field, it will be lost. This action cannot be undone."
+msgstr "Nếu bạn có nội dung nào ở trong trường dữ liệu này, nó sẽ bị mất. Thao tác này không thể hoàn hồi."
+
+#: content_admin.inc:697
+#: fieldgroup.module:215
+msgid "Remove"
+msgstr "Bỏ ra"
+
+#: content_admin.inc:697
+#: fieldgroup.module:215
+msgid "Cancel"
+msgstr "Hủy bỏ"
+
+#: content_admin.inc:715
+msgid "Removed field %field from %type."
+msgstr "Đã bỏ đi trường dữ liệu %field khỏi %type."
+
+#: content_admin.inc:738
+msgid "Widget settings"
+msgstr "Các thiết lập widget"
+
+#: content_admin.inc:739
+msgid "These settings apply only to the %field field as it appears in the %type content type."
+msgstr "Các thiết lập này chỉ áp dụng cho trường dữ liệu $field khi nó hiển thị trong kiểu nội dung %type."
+
+#: content_admin.inc:753
+msgid "Widget"
+msgstr "Widget"
+
+#: content_admin.inc:774
+#: fieldgroup.module:105
+msgid "Help text"
+msgstr "Bản văn trợ giúp"
+
+#: content_admin.inc:777
+msgid "Instructions to present to the user below this field on the editing form."
+msgstr "Phần hướng dẫn, được trình bày cho người dùng, ở phía dưới trường dữ liệu này trong biểu mẫu soạn thảo."
+
+#: content_admin.inc:786
+msgid "Default value"
+msgstr "Giá trị mặc định"
+
+#: content_admin.inc:809
+#: number.module:65
+#: text.module:49
+#, fuzzy
+msgid "PHP code"
+msgstr "Đoạn mã PHP"
+
+#: content_admin.inc:827
+#: number.module:71
+#: text.module:55
+msgid "Code"
+msgstr "Đoạn mã"
+
+#: content_admin.inc:831
+msgid "Advanced Usage Only: PHP code that returns a default value. Should not include &lt;?php ?&gt; delimiters. If this field is filled out, the value returned by this code will override any value specified above. Expected format :<pre>!sample</pre>Using !link_devel's 'devel load' tab on a %type content page might help you figure out the expected format."
+msgstr "Chỉ sử dụng nâng cao: Đoạn mã PHP trả về giá trị mặc định. Không nên bao gồm dấu phân cách &lt;?php ?&gt;. Nếu trường dữ liệu này được nhập giá trị, giá trị được trả về từ đoạn mã này sẽ chép đè lên các giá trị được liệt kê ở trên.<br />Định dạng mẫu: <pre>!sample</pre>Sử dụng tab 'devel load' của !link_devel trên trang nội dung %type có thể giúp bạn tìm ra định dạng thích hợp."
+
+#: content_admin.inc:837
+msgid "Data settings"
+msgstr "Các thiết lập dữ liệu"
+
+#: content_admin.inc:838
+msgid "These settings apply to the %field field in every content type in which it appears."
+msgstr "Các thiết lập áp dụng cho trường dữ liệu %field trong mỗi kiểu nội dung mà nó xuất hiện."
+
+#: content_admin.inc:842
+msgid "Required"
+msgstr "Yêu cầu"
+
+#: content_admin.inc:847
+msgid "Multiple values"
+msgstr "Đa giá trị"
+
+#: content_admin.inc:858
+msgid "Save field settings"
+msgstr "Lưu các thiết lập trường"
+
+#: content_admin.inc:924
+msgid "The default value PHP code returned an incorrect value<br/>Expected format : <pre>!sample</pre>Returned value : @value"
+msgstr "Giá trị mặc định đoạn mã PHP trả về là không đúng.<br />Định dạng mẫu: <pre>!sample< /pre>Trả về giá trị: @value"
+
+#: content_admin.inc:962
+msgid "The default value PHP code created @value which is invalid."
+msgstr "Giá trị mặc định, đoạn mã PHP tạo ra, @value là không hợp lệ."
+
+#: content_admin.inc:965
+msgid "The default value is invalid."
+msgstr "Giá trị mặc định không hợp lệ."
+
+#: content_admin.inc:1022
+msgid "Saved field %field."
+msgstr "Đã lưu trường dữ liệu %field."
+
+#: content_admin.inc:1329;1426
+msgid "No PostgreSQL mapping found for %type data type."
+msgstr "Không tìm thấy ánh xạ PostgreSQL cho kiểu dữ liệu %type."
+
+#: content_admin.inc:1329;1426
+msgid "database"
+msgstr "cơ sở dữ liệu"
+
+#: content_crud.inc:59
+msgid "The content fields table %name has been created."
+msgstr "Bảng các trường nội dung %name đã được tạo."
+
+#: content_crud.inc:89
+msgid "Content fields table %old_name has been renamed to %new_name and field instances have been updated."
+msgstr "Bảng các trường nội dung %old_name đã được đổi tên thành %new_name và các thực thể trường (field instances) đã được cập nhật."
+
+#: content_crud.inc:111
+msgid "The content fields table %name has been deleted."
+msgstr "Bảng các trường nội dung %name đã được xóa."
+
+#: content_panels.inc:11
+msgid "Node CCK Group"
+msgstr ""
+
+#: content_panels.inc:54
+msgid "Group content goes here."
+msgstr ""
+
+#: content_panels.inc:74
+msgid "CCK Group"
+msgstr "Nhóm CCK"
+
+#: content_panels.inc:77
+msgid "Group contents."
+msgstr ""
+
+#: content_panels.inc:78;141;152
+msgid "Node"
+msgstr "Node"
+
+#: content_panels.inc:79
+msgid "Node context"
+msgstr ""
+
+#: content_panels.inc:106
+msgid "Which group"
+msgstr "Nhóm nào"
+
+#: content_panels.inc:116
+msgid "Text to display if group has no data. Note that title will not display unless overridden."
+msgstr ""
+
+#: content_panels.inc:130
+msgid "\"@s\" node cck group"
+msgstr ""
+
+#: content_panels.inc:138
+msgid "Node from reference"
+msgstr "Node được tham chiếu"
+
+#: content_panels.inc:140
+msgid "Adds a node from a node reference in a node context; if multiple nodes are referenced, this will get the first referenced node only."
+msgstr ""
+
+#: content_panels.inc:149
+msgid "User from reference"
+msgstr "Người dùng được tham chiếu"
+
+#: content_panels.inc:151
+msgid "Adds a user from a user reference in a node context; if multiple users are referenced, this will get the first referenced user only."
+msgstr ""
+
+#: content_panels.inc:188
+msgid "Node reference field"
+msgstr "Trường dữ liệu tham khảo node."
+
+#: content_panels.inc:226
+msgid "User reference field"
+msgstr "Trường dữ liệu tham chiếu người dùng"
+
+#: content_views.inc:71
+msgid "Group multiple values"
+msgstr "Nhóm lại các trường dữ liệu nhiều giá trị"
+
+#: content_views.inc:72
+msgid "Do not group multiple values"
+msgstr "Không nhóm lại các trường dữ liệu nhiều giá trị"
+
+#: content_views.inc:73
+msgid "Show first value only"
+msgstr "Chỉ trình bày giá trị đầu tiên"
+
+#: content_views.inc:74
+msgid "Show last value only"
+msgstr "Chỉ trình bày giá trị cuối cùng"
+
+#: content.module:19
+msgid "The content module, a required component of the Content Construction Kit (CCK), allows administrators to associate custom fields with content types. In Drupal, content types are used to define the characteristics of a post, including the title and description of the fields displayed on its add and edit pages. Using the content module (and the other helper modules included in CCK), custom fields beyond the default \"Title\" and \"Body\" may be added. CCK features are accessible through tabs on the <a href=\"@content-types\">content types administration page</a>. (See the <a href=\"@node-help\">node module help page</a> for more information about content types.)"
+msgstr ""
+
+#: content.module:20
+msgid "When adding a custom field to a content type, you determine its type (whether it will contain text, numbers, or references to other objects) and how it will be displayed (either as a text field or area, a select box, checkbox, radio button, or autocompleting field). A field may have multiple values (i.e., a \"person\" may have multiple e-mail addresses) or a single value (i.e., an \"employee\" has a single employee identification number). As you add and edit fields, CCK automatically adjusts the structure of the database as necessary. CCK also provides a number of other features, including intelligent caching for your custom data, an import and export facility for content type definitions, and integration with other contributed modules."
+msgstr ""
+
+#: content.module:21
+msgid "Custom field types are provided by a set of optional modules included with CCK (each module provides a different type). The <a href=\"@modules\">modules page</a> allows you to enable or disable CCK components. A default installation of CCK includes:"
+msgstr "Các kiểu trường nội dung tùy chỉnh được cung cấp bởi các module tùy chọn được bao gồm với CCK (mỗi module cung cấp các kiểu trường dữ liệu khác nhau). <a href=\"@modules\">Trang module</a> cho phép bạn kích hoạt hoặc ngưng kích hoạt các gói chức năng. Bản cài đặt mặc định của CCK bao gồm:"
+
+#: content.module:23
+msgid "<em>number</em>, which adds numeric field types, in integer, decimal or floating point form. You may define a set of allowed inputs, or specify an allowable range of values. A variety of common formats for displaying numeric data are available."
+msgstr "<em>số</em>, cung cấp chức năng thêm các kiểu trường dữ liệu số (số nguyên, só thập phân hoặc số thực) vào kiểu nội dung. Bạn có thể định nghĩa một tập hợp các giá trí được chấp nhận để nhập vào hoặc xác định một khoảng các giá trị được phép. Đã có sẵn các định dạng trình bày thông thường cho dữ liệu số."
+
+#: content.module:24
+msgid "<em>text</em>, which adds text field types. A text field may contain plain text only, or optionally, may use Drupal's input format filters to securely manage rich text input. Text input fields may be either a single line (text field), multiple lines (text area), or for greater input control, a select box, checkbox, or radio buttons. If desired, CCK can validate the input to a set of allowed values."
+msgstr ""
+
+#: content.module:25
+msgid "<em>nodereference</em>, which creates custom references between Drupal nodes. By adding a <em>nodereference</em> field and two different content types, for instance, you can easily create complex parent/child relationships between data (multiple \"employee\" nodes may contain a <em>nodereference</em> field linking to an \"employer\" node)."
+msgstr ""
+
+#: content.module:26
+msgid "<em>userreference</em>, which creates custom references to your sites' user accounts. By adding a <em>userreference</em> field, you can create complex relationships between your site's users and posts. To track user involvement in a post beyond Drupal's standard <em>Authored by</em> field, for instance, add a <em>userreference</em> field named \"Edited by\" to a content type to store a link to an editor's user account page."
+msgstr ""
+
+#: content.module:27
+msgid "<em>fieldgroup</em>, which creates collapsible fieldsets to hold a group of related fields. A fieldset may either be open or closed by default. The order of your fieldsets, and the order of fields within a fieldset, is managed via a drag-and-drop interface provided by content module."
+msgstr ""
+
+#: content.module:29
+msgid "For more information, see the online handbook entry for <a href=\"@handbook-cck\">CCK</a> or the <a href=\"@project-cck\">CCK project page</a>."
+msgstr "Để có thêm thông tin, xem sổ tay trực tuyến trang <a href=\"@handbook-cck\">tài liệu CCK</a> or the <a href=\"@project-cck\">công trình CCK</a>."
+
+#: content.module:34
+msgid "Configure how this content type's fields and field labels should be displayed when it's viewed in teaser and full-page mode."
+msgstr "Cấu hình cách trình bày giá trị của trường dữ liệu và nhãn của trường ở bản cắt và ở trang đầy đủ."
+
+#: content.module:86
+#: content_copy.module:135
+msgid "Fields"
+msgstr "Các trường dữ liệu"
+
+#: content.module:100
+msgid "Edit"
+msgstr "Sửa"
+
+#: content.module:107
+msgid "Manage fields"
+msgstr "Quản lý các trường dữ liệu"
+
+#: content.module:116
+msgid "Display fields"
+msgstr "Trình bày các trường dữ liệu"
+
+#: content.module:144
+msgid "Remove field"
+msgstr "Bỏ trường dữ liệu"
+
+#: content.module:0
+msgid "content"
+msgstr "nội dung"
+
+#: content_copy.module:41
+msgid "Export"
+msgstr "Xuất ra"
+
+#: content_copy.module:50
+msgid "Import"
+msgstr "Nhập vào"
+
+#: content_copy.module:87
+msgid "This form will process a content type and one or more fields from that type and export the settings. The export created by this process can be copied and pasted as an import into the current or any other database. The import will add the fields to into an existing content type or create a new content type that includes the selected fields."
+msgstr "Biểu mẫu này sẽ xử lý một kiểu nội dung vào một/nhiều trường dữ liệu từ kiểu nội dung đó và xuất ra các thiết lập. Bản xuất ra được tạo bởi quá trình xử lý này có thể được sao chép và dán vào cơ sở dữ liệu hiện tại hoặc cơ sở dữ liệu khác, sử dụng chức năng nhập vào. Chức năng nhập vào sẽ thêm các trường vào kiểu nội dung hiện có hoặc tạo một kiểu nội dung mới bao gồm các trường đã được chọn."
+
+#: content_copy.module:96
+msgid "Types"
+msgstr "Các kiểu"
+
+#: content_copy.module:100
+msgid "Select the content type to export."
+msgstr "Chọn kiểu nội dung để xuất ra."
+
+#: content_copy.module:125
+msgid "Groups"
+msgstr "Các nhóm"
+
+#: content_copy.module:129
+msgid "Select the group definitions to export from %type."
+msgstr "Chọn các định nghĩa nhóm để xuất ra từ %type."
+
+#: content_copy.module:139
+msgid "Select the field definitions to export from %type."
+msgstr "Chọn các định nghĩa trường để xuất ra từ %type."
+
+#: content_copy.module:149
+msgid "Export data"
+msgstr "Xuất dữ liệu"
+
+#: content_copy.module:154
+msgid "Copy the export text and paste it into another content type using the import function."
+msgstr "Sao chép phần văn bản xuất ra và dán nó vào một kiểu nội dung khác sử dụng chức năng nhập vào."
+
+#: content_copy.module:220
+msgid "This form will import field definitions exported from another content type or another database.<br/>Note that fields cannot be duplicated within the same content type, so imported fields will be added only if they do not already exist in the selected type."
+msgstr "Biểu mẫu này sẽ nhập vào các định nghĩa trường được xuất ra từ kiểu nội dung khác hoặc từ một cơ sở dữ liệu khác.<br />Chú ý rằng các trường không thể bị sao lại trong một kiểu nội dung, vì thế các trường nhập sẽ chỉ được thêm vào nếu chúng chưa tồn tại trong kiểu nội dung đã chọn."
+
+#: content_copy.module:223
+msgid "<Create>"
+msgstr "<Tạo>"
+
+#: content_copy.module:225
+msgid "Content type"
+msgstr "Kiểu nội dung"
+
+#: content_copy.module:226
+msgid "Select the content type to import these fields into.<br/>Select &lt;Create&gt; to create a new content type to contain the fields."
+msgstr "Chọn một kiểu nội dung để nhập những trường dữ liệu này vào.<br />Chọn &lt;Tạo&gt; để tạo một kiểu nội dung mới để chứa các trường dữ liệu này."
+
+#: content_copy.module:231
+msgid "Import data"
+msgstr "Nhập dữ liệu"
+
+#: content_copy.module:233
+msgid "Paste the text created by a content export into this field."
+msgstr "Dán vào bản văn được tạo bởi chức năng xuất nội dung vào trường này."
+
+#: content_copy.module:261
+msgid "The import data is not valid import text."
+msgstr "Dữ liệu nhập vào không phải là bản văn hợp lệ."
+
+#: content_copy.module:306
+msgid "The following modules must be enabled for this import to work: %modules."
+msgstr "Các module sau phải được kích hoạt để phần nhập dữ liệu có thể hoạt động: %modules."
+
+#: content_copy.module:312;326
+msgid "<create>"
+msgstr "<tạo>"
+
+#: content_copy.module:314
+msgid "The content type %type already exists in this database."
+msgstr "Kiểu nội dung %type đã tồn tại trong cơ sở dữ liệu này."
+
+#: content_copy.module:321
+msgid "Exiting. No import performed."
+msgstr "Thoát. Không thực hiện nhập dữ liệu."
+
+#: content_copy.module:338
+msgid "An error has occured adding the content type %type.<br/>Please check the errors displayed for more details."
+msgstr "Có lỗi xảy ra khi thêm kiểu dữ liệu %type.<br />Vui lòng kiểm tra các lỗi được trình bày để có thêm chi tiết."
+
+#: content_copy.module:374
+msgid "The imported field %field_label (%field_name) was not added to %type because that field already exists in %type."
+msgstr "Trường dữ liệu %field_label (%field_name) nhập vào không được thêm vào %type bởi vì nó đã tồn tại trong %type."
+
+#: content_copy.module:395;414
+msgid "An error has occured adding the field %field_label (%field_name).<br/>Please check the errors displayed for more details."
+msgstr "Có lỗi xảy ra khi thêm vào trường dữ liệu %field_label (%field_name).<br />Vui lòng kiểm tra các lỗi được trình bày để có thêm chi tiết."
+
+#: content_copy.module:428
+msgid "The field %field_label (%field_name) was added to the content type %type, but an error has occured updating the field settings.<br/>Please check the errors displayed for more details."
+msgstr "Trường dữ liệu $field_label (%field_name) đã được thêm vào kiểu nội dung %type, nhưng một lỗi đã xảy ra khi cập nhật các thiết lập của trường.<br />Vui lòng kiểm tra các lỗi được trình bày để cho thêm chi tiết."
+
+#: content_copy.module:441
+msgid "The field %field_label (%field_name) was added to the content type %type, but an error has occured updating the field's 'display_settings'.<br/>The db error is: '%db_err'."
+msgstr "Trường dữ liệu $field_label (%field_name) đã được thêm vào kiểu nội dung %type, nhưng một lỗi đã xảy ra khi cập nhật 'display_settings' của trường dữ liệu.<br />Lỗi CSDL: '%db_err'."
+
+#: content_copy.module:578
+msgid "An error occurred when exporting the 'display settings' data for the field %field_name.<br/>The db error is: '%db_err'."
+msgstr "Có lỗi xảy ra khi xuất ra dữ liệu 'các thiết lập trình bày' cho trường dữ liệu %field_name.<br />Lỗi CSDL: '%db_err'."
+
+#: content_copy.module:0
+msgid "content_copy"
+msgstr "content_copy"
+
+#: fieldgroup.module:18
+msgid "Add group"
+msgstr "Thêm nhóm"
+
+#: fieldgroup.module:28;36
+msgid "Edit group"
+msgstr "Sửa nhóm"
+
+#: fieldgroup.module:65
+msgid "Add"
+msgstr "Thêm"
+
+#: fieldgroup.module:72
+msgid "Save"
+msgstr "Lưu"
+
+#: fieldgroup.module:91
+msgid "These settings apply to the group in the node editing form"
+msgstr "Các thiết lập này áp dụng cho nhóm trong biểu mẫu soạn thảo"
+
+#: fieldgroup.module:95
+msgid "Style"
+msgstr ""
+
+#: fieldgroup.module:98
+msgid "always open"
+msgstr "luôn mở"
+
+#: fieldgroup.module:99
+msgid "collapsible"
+msgstr "có thể thâu gọn"
+
+#: fieldgroup.module:100
+msgid "collapsed"
+msgstr "thâu gọn"
+
+#: fieldgroup.module:108
+msgid "Instructions to present to the user on the editing form."
+msgstr "Phần hướng dẫn trình bày cho người dùng trên biểu mẫu soạn thảo."
+
+#: fieldgroup.module:114
+msgid "These settings apply to the group on node display."
+msgstr "Các thiết lập này ấp dụng cho nhóm khi trình bày node."
+
+#: fieldgroup.module:118
+msgid "Description"
+msgstr "Mô tả"
+
+#: fieldgroup.module:121
+msgid "A description of the group."
+msgstr "Phần mô tả cho nhóm."
+
+#: fieldgroup.module:143
+msgid "The group name %name already exists."
+msgstr "Tên nhóm %name đã tồn tại."
+
+#: fieldgroup.module:147
+msgid "The group name %name is invalid."
+msgstr "Tên nhóm %group không hợp lệ."
+
+#: fieldgroup.module:212
+msgid "Are you sure you want to remove the group %label?"
+msgstr "Bạn có chắc muốn xóa nhóm %label?"
+
+#: fieldgroup.module:214
+msgid "This action cannot be undone."
+msgstr "Thao tác này không thể hoàn hồi."
+
+#: fieldgroup.module:223
+msgid "The group %group_name has been removed."
+msgstr "Nhóm %group_name đã được gỡ bỏ."
+
+#: fieldgroup.module:276
+msgid "No group"
+msgstr "Không có nhóm."
+
+#: fieldgroup.module:319
+msgid "Display in group"
+msgstr "Trình bày trong nhóm"
+
+#: fieldgroup.module:322
+msgid "Select a group, in which the field will be displayed on the editing form."
+msgstr "Chọn một nhóm, trong đó trường sẽ được trình bày trong biểu mẫu soạn thảo."
+
+#: fieldgroup.module:481
+msgid "no styling"
+msgstr "không phong cách"
+
+#: fieldgroup.module:482
+msgid "simple"
+msgstr "đơn giản"
+
+#: fieldgroup.module:483
+msgid "fieldset"
+msgstr "fieldset"
+
+#: fieldgroup.module:484
+msgid "fieldset - collapsible"
+msgstr "fieldset - có thể thâu gọn"
+
+#: fieldgroup.module:485
+msgid "fieldset - collapsed"
+msgstr "fieldset - thâu gọn"
+
+#: fieldgroup.module:0
+msgid "fieldgroup"
+msgstr "fieldgroup"
+
+#: nodereference.module:17
+msgid "node reference autocomplete"
+msgstr "tham khảo node tự động"
+
+#: nodereference.module:29
+#: nodereference.info:0
+msgid "Node Reference"
+msgstr "Tham chiếu Node"
+
+#: nodereference.module:42
+msgid "Content types that can be referenced"
+msgstr "Các kiểu nội dung có thể được tham chiếu"
+
+#: nodereference.module:51
+msgid "Existing Views"
+msgstr "Views đã tồn tại"
+
+#: nodereference.module:56
+msgid "Default Views"
+msgstr "Views mặc định"
+
+#: nodereference.module:61
+msgid "Advanced - Nodes that can be referenced (View)"
+msgstr "Nâng cao - Các node có thể được tham chiếu (View)"
+
+#: nodereference.module:67
+msgid "View"
+msgstr "Xem"
+
+#: nodereference.module:70
+msgid "Choose the \"Views module\" view that selects the nodes that can be referenced.<br>Note :<ul><li>This will discard the \"Content types\" settings above. Use the view's \"filters\" section instead.</li><li>Use the view's \"fields\" section to display additional informations about candidate nodes on node creation/edition form.</li><li>Use the view's \"sort criteria\" section to determine the order in which candidate nodes will be displayed.</li></ul>"
+msgstr "Chọn view ( được tạo ra bởi module \"Views module\"), chỉ những node được chọn ra bởi view này mới có thể được tham chiếu.<br>Ghi chú:<ul><li>Thiết lập này sẽ bỏ qua các thiết lập \"Các kiểu nội dung\" ở trên. Use the view's \"filters\" section instead.</li><li>Sử dụng view's \"fields\" section để trình bày thêm thông tin về candidate nodes trên biểu mẫu soạn thảo node.</li><li>Sử dụng the view's \"sort criteria\" section to determine the order in which candidate nodes will be displayed.</li></ul>"
+
+#: nodereference.module:74
+msgid "View arguments"
+msgstr "Các tham số View"
+
+#: nodereference.module:77
+msgid "Provide a comma separated list of arguments to pass to the view."
+msgstr "Dấu phẩy phân cách các tham số truyền vào view."
+
+#: nodereference.module:122
+msgid "%name : This post can't be referenced."
+msgstr "%name: Bài viết này không thể được tham chiếu."
+
+#: nodereference.module:136
+msgid "Title (link)"
+msgstr "Tiêu đề (liên kết)"
+
+#: nodereference.module:140
+msgid "Title (no link)"
+msgstr "Tiêu đề (Không liên kết)"
+
+#: nodereference.module:144
+msgid "Full node"
+msgstr "Node đầy đủ"
+
+#: nodereference.module:213
+#: userreference.module:135
+msgid "Select List"
+msgstr "Danh sách lựa chọn"
+
+#: nodereference.module:217
+#: userreference.module:139
+msgid "Autocomplete Text Field"
+msgstr "Trường dữ liệu bản văn tự động"
+
+#: nodereference.module:242
+#: userreference.module:186
+msgid "<none>"
+msgstr "<rỗng>"
+
+#: nodereference.module:344
+msgid "%name : Title mismatch. Please check your selection."
+msgstr "%name: Tiêu đề không trùng khớp. Xin kiểm tra lại chọn lựa của bạn."
+
+#: nodereference.module:536
+msgid "<empty>"
+msgstr "<rỗng>"
+
+#: nodereference.module:0
+msgid "nodereference"
+msgstr "tham chiếu node"
+
+#: number.module:33
+msgid "Minimum"
+msgstr "Tối thiểu"
+
+#: number.module:38
+msgid "Maximum"
+msgstr "Tối đa"
+
+#: number.module:43
+msgid "Prefix"
+msgstr "Tiền tố"
+
+#: number.module:46
+msgid "Define a string that should be prefixed to the value, like $ or €. Leave blank for none. Separate singular and plural values with a pipe (pound|pounds)."
+msgstr "Định nghĩa một chuỗi làm tiền tố cho giá trị, như $ hay €. Để trống nếu không muốn. Phân biệt giá trị số ít với số nhiều bằng dấu đứng (thí dụ: pound|pounds)."
+
+#: number.module:50
+msgid "Suffix"
+msgstr "Hậu tố"
+
+#: number.module:53
+msgid "Define a string that should suffixed to the value, like m², m/s², kb/s. Leave blank for none. Separate singular and plural values with a pipe (pound|pounds). "
+msgstr "Định nghĩa một chuỗi làm hậu tố cho giá trị, như m², m/s², kb/s. Để trống nếu không muốn. Phân biệt giá trị số ít với số nhiều bằng dấu đứng (thí dụ: pound|pounds)."
+
+#: number.module:57
+#: text.module:41
+msgid "Allowed values list"
+msgstr "Danh sách các giá trị được phép"
+
+#: number.module:61
+#: text.module:45
+msgid "The possible values this field can contain. Enter one value per line, in the format key|label. The key is the value that will be stored in the database and it must match the field storage type, %type. The label is optional and the key will be used as the label if no label is specified."
+msgstr "Các giá trị mà trường dữ liệu này có thể chứa. Nhập một giá trị vào mỗi dòng, với định dạng khóa|nhãn. Khóa là giá trị được lưu trữ ở cơ sở dữ liệu, nó phải trùng khớp với kiểu lưu trữ của trường dữ liệu. Nhãn là một tùy chọn và khóa sẽ được sử dụng như một nhãn nếu nhãn không được thiết lập."
+
+#: number.module:74
+#: text.module:58
+msgid "Advanced Usage Only: PHP code that returns a keyed array of allowed values. Should not include &lt;?php ?&gt; delimiters. If this field is filled out, the array returned by this code will override the allowed values list above."
+msgstr "Chỉ sử dụng nâng cao: Đoạn mã PHP trả về một mảng khóa của các giá trị được phép. Không nên bao gồm dấu giới hạn &lt;?php ?&gt;. Nếu trường này được điền vào, mảng được trả về bởi đoạn mã này sẽ chép đè lên các giá trị được phép được liệt kê ở trên."
+
+#: number.module:80
+msgid "\"Minimum\" must be a number."
+msgstr "\"Tối thiểu\" phải là một số."
+
+#: number.module:83
+msgid "\"Maximum\" must be a number."
+msgstr "\"Tối đa\" phải là một số."
+
+#: number.module:138
+msgid "The value of %name may be no smaller than %min."
+msgstr "Giá trị của %name phải không nhỏ hơn %min."
+
+#: number.module:141
+msgid "The value of %name may be no larger than %max."
+msgstr "Giá trị của %name phải không lớn hơn %max"
+
+#: number.module:169
+msgid "unformatted"
+msgstr "không định dạng"
+
+#: number.module:0
+msgid "number"
+msgstr "số"
+
+#: optionwidgets.module:15
+#, fuzzy
+msgid "Create a list of options as a list in <strong>Allowed values</strong> or as an array in PHP code at the bottom of this page. These values will be the same for the %field in all content types. "
+msgstr "Tạo một danh sách các tùy chọn giống như danh sách trong <strong>Các giá trị được phép</strong> hay là giống như một mảng trong đoạn mã PHP ở phía dưới của trang này. Những giá trị cho %field sẽ áp dụng ở mọi kiểu nội dung."
+
+#: optionwidgets.module:17
+#, fuzzy
+msgid "For a 'Single on/off checkbox' widget, define the 'off' value first, then the 'on' value in the <strong>Allowed values</strong> section. Note that the checkbox will be labeled with the label of the 'on' value."
+msgstr "Với hộp chọn đơn bật/tắt, định nghĩa giá trị 'tắt' trước, tiếp sau, giá trị 'bật' trong mục  <strong>Các giá trị được phép</strong>"
+
+#: optionwidgets.module:20
+msgid "The 'Checkboxes / radio buttons' widget will display checkboxes if the multiple values option is selected for this field, otherwise radios will be displayed."
+msgstr ""
+
+#: optionwidgets.module:34
+msgid "Select list"
+msgstr "Danh sách lựa chọn"
+
+#: optionwidgets.module:38
+msgid "Check boxes/radio buttons"
+msgstr ""
+
+#: optionwidgets.module:42
+msgid "Single on/off checkbox"
+msgstr "Hộp đánh dấu đơn"
+
+#: optionwidgets.module:204
+msgid "N/A"
+msgstr "N/A"
+
+#: optionwidgets.module:0
+msgid "optionwidgets"
+msgstr "optionwidgets"
+
+#: text.module:14
+#: text.info:0
+msgid "Text"
+msgstr "Bản văn"
+
+#: text.module:25
+msgid "Filtered text (user selects input format)"
+msgstr "Bản văn được lọc (người dùng chọn định dạng dữ liệu nhập)"
+
+#: text.module:28
+msgid "Text processing"
+msgstr "Xử lý bản văn"
+
+#: text.module:87
+msgid "Set the option to the number of initial characters to filter by. Leave empty for full term; use 1 for an A/B/C style glossary."
+msgstr ""
+
+#: text.module:176
+msgid "%label is longer than %max characters."
+msgstr "%label dài hơn % ký tự tối đa."
+
+#: text.module:0
+msgid "text"
+msgstr "bản văn"
+
+#: userreference.module:16
+msgid "user reference autocomplete"
+msgstr "tự động tham chiếu người dùng"
+
+#: userreference.module:28
+#: userreference.info:0
+msgid "User Reference"
+msgstr "Tham chiếu người dùng"
+
+#: userreference.module:41
+msgid "User roles that can be referenced"
+msgstr "Các vai trò người dùng có thể được tham chiếu tới"
+
+#: userreference.module:47
+msgid "User status that can be referenced"
+msgstr "Tình trạng người dùng có thể được tham chiếu tới"
+
+#: userreference.module:49
+msgid "Active"
+msgstr "Hoạt động"
+
+#: userreference.module:49
+msgid "Blocked"
+msgstr ""
+
+#: userreference.module:85
+msgid "%name : Invalid user."
+msgstr "%name: Tên không hợp lệ"
+
+#: userreference.module:154
+msgid "Reverse Link"
+msgstr ""
+
+#: userreference.module:156
+msgid "No"
+msgstr "Không"
+
+#: userreference.module:156
+msgid "Yes"
+msgstr "Có"
+
+#: userreference.module:158
+msgid "If selected, a reverse link back to the referencing node will displayed on the referenced user record."
+msgstr ""
+
+#: userreference.module:423
+msgid "Related Content"
+msgstr "Nội dung liên quan"
+
+#: userreference.module:0
+msgid "userreference"
+msgstr "tham chiếu người dùng"
+
+#: optionwidgets.install:77
+msgid "<div>The allowed values list for %field was updated from </div><pre>%start</pre><div> to </div><pre>%end</pre><div>You can go to the field settings page to give each option a more user-friendly label."
+msgstr "<div>Danh sách các giá trị được phép cho %field đã được cập nhật từ <div> <pre>%start</pre><div>đến</div><pre>%end</pre><div>Bạn có thể đến trang cấu hình trường dữ liệu để gắn nhãn, thân thiện hơn với người dùng."
+
+#: optionwidgets.install:80
+msgid "<div>The allowed values list for %field was not changed from </div><pre>%start</pre>"
+msgstr "<div>Danh sách các giá trị được phép cho %field không được thay đổi từ <pre>%start</pre>"
+
+#: content.info:0
+msgid "Content"
+msgstr "Nội dung"
+
+#: content.info:0
+msgid "Allows administrators to define new content types."
+msgstr "Cho phép người điều hành định nghĩa các kiểu nội dung mới."
+
+#: content.info:0
+#: content_copy.info:0
+#: fieldgroup.info:0
+#: nodereference.info:0
+#: number.info:0
+#: optionwidgets.info:0
+#: text.info:0
+#: userreference.info:0
+msgid "CCK"
+msgstr "CCK"
+
+#: content_copy.info:0
+msgid "Content Copy"
+msgstr "Sao chép nội dung"
+
+#: content_copy.info:0
+msgid "Enables ability to import/export field definitions."
+msgstr "Kích hoạt khả năng nhập/xuất các định nghĩa trường dữ liệu."
+
+#: fieldgroup.info:0
+msgid "Fieldgroup"
+msgstr "Fieldgroup"
+
+#: fieldgroup.info:0
+msgid "Create field groups for CCK fields."
+msgstr "Tạo các nhóm cho các trường dữ liệu CCK."
+
+#: nodereference.info:0
+msgid "Defines a field type for referencing one node from another."
+msgstr "Định nghĩa "
+
+#: number.info:0
+msgid "Number"
+msgstr "Số"
+
+#: number.info:0
+msgid "Defines numeric field types."
+msgstr "Định nghĩa các trường dữ liệu số"
+
+#: optionwidgets.info:0
+msgid "Option Widgets"
+msgstr "Các widget tùy chọn"
+
+#: optionwidgets.info:0
+msgid "Defines selection, check box and radio button widgets for text and numeric fields."
+msgstr "Định nghĩa chọn lựa, hộp kiểm tra và các nút radio cho bản văn và các trường dữ liệu số."
+
+#: text.info:0
+msgid "Defines simple text field types."
+msgstr "Định nghĩa các kiểu trường dữ liệu bản văn đơn giản."
+
+#: userreference.info:0
+msgid "Defines a field type for referencing a user from a node."
+msgstr "Định nghĩa một kiểu trường dữ liệu để tham khảo đến một người dùng từ một node."
+
+#: theme/node-content_example.tpl.php:6
+msgid "!date — !username"
+msgstr "!date - !username"
+
+#~ msgid "cck"
+#~ msgstr "cck"
+

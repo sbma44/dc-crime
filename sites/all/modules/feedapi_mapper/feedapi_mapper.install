@@ -1,0 +1,34 @@
+<?php
+// $Id: feedapi_mapper.install,v 1.1 2008/01/18 21:59:58 alexb Exp $
+
+/**
+ * Implementaton of hook_install().
+ */
+function feedapi_mapper_install() {
+  switch ($GLOBALS['db_type']) {
+    case 'mysqli':
+    case 'mysql':
+      db_query("CREATE TABLE {feedapi_mapper} (
+        `nid` INT( 10 ) UNSIGNED NOT NULL ,
+        `mapping` LONGTEXT NOT NULL ,
+        PRIMARY KEY ( `nid` )
+        )"); 
+      break;
+    case 'pgsql':
+      // Todo.
+      break;
+  }
+}
+
+/**
+ * Implementaton of hook_uninstall().
+ */
+function feedapi_mapper_uninstall() {
+  switch ($GLOBALS['db_type']) {
+    case 'mysqli':
+    case 'mysql':
+    case 'pgsql':
+      db_query("DROP TABLE {feedapi_mapper}");
+      break;
+  }
+}

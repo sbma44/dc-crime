@@ -1,0 +1,272 @@
+# $Id: feedapi_aggregator.pot,v 1.1.2.3 2008/02/29 16:32:07 aronnovak Exp $
+#
+# LANGUAGE translation of Drupal (general)
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from files:
+#  feedapi_aggregator.module,v 1.1.2.29 2008/01/25 13:52:23 aronnovak
+#  n/a
+#  feedapi_aggregator.install,v 1.1.2.7 2008/01/24 15:48:57 aronnovak
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"POT-Creation-Date: 2008-01-25 16:34+0100\n"
+"PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
+"Last-Translator: NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: feedapi_aggregator.module:14
+msgid "Emulates the Drupal core aggregator with the FeedAPI module."
+msgstr ""
+
+#: feedapi_aggregator.module:16
+msgid "FeedAPI Aggregator - classic style aggregator items"
+msgstr ""
+
+#: feedapi_aggregator.module:19
+msgid " Go to !category-admin for adding or removing categories."
+msgstr ""
+
+#: feedapi_aggregator.module:19
+msgid "category management"
+msgstr ""
+
+#: feedapi_aggregator.module:35;69;201;873
+msgid "Categories"
+msgstr ""
+
+#: feedapi_aggregator.module:42
+msgid "List"
+msgstr ""
+
+#: feedapi_aggregator.module:48
+msgid "Add category"
+msgstr ""
+
+#: feedapi_aggregator.module:56
+msgid "News aggregator"
+msgstr ""
+
+#: feedapi_aggregator.module:63
+msgid "Sources"
+msgstr ""
+
+#: feedapi_aggregator.module:76
+msgid "RSS feed"
+msgstr ""
+
+#: feedapi_aggregator.module:92 feedapi_aggregator.info:0
+msgid "FeedAPI Aggregator"
+msgstr ""
+
+#: feedapi_aggregator.module:116;138
+msgid "View"
+msgstr ""
+
+#: feedapi_aggregator.module:120;142
+msgid "Categorize"
+msgstr ""
+
+#: feedapi_aggregator.module:126;148
+msgid "Configure"
+msgstr ""
+
+#: feedapi_aggregator.module:172
+msgid "none"
+msgstr ""
+
+#: feedapi_aggregator.module:174
+msgid "Items shown in sources and categories pages"
+msgstr ""
+
+#: feedapi_aggregator.module:176
+msgid "The number of items which will be shown with each feed or category in the feed and category summary pages."
+msgstr ""
+
+#: feedapi_aggregator.module:191;268
+msgid "Number of news items in block"
+msgstr ""
+
+#: feedapi_aggregator.module:233
+msgid "News items"
+msgstr ""
+
+#: feedapi_aggregator.module:252
+msgid "!title category latest items"
+msgstr ""
+
+#: feedapi_aggregator.module:259
+msgid "!title feed latest items"
+msgstr ""
+
+#: feedapi_aggregator.module:287;295
+msgid "more"
+msgstr ""
+
+#: feedapi_aggregator.module:287
+msgid "View this feed's recent news."
+msgstr ""
+
+#: feedapi_aggregator.module:295
+msgid "View this category's recent news."
+msgstr ""
+
+#: feedapi_aggregator.module:319;580 feedapi_aggregator.install:88
+msgid "Title"
+msgstr ""
+
+#: feedapi_aggregator.module:325
+msgid "Description"
+msgstr ""
+
+#: feedapi_aggregator.module:328;342
+msgid "Submit"
+msgstr ""
+
+#: feedapi_aggregator.module:331;361
+msgid "Delete"
+msgstr ""
+
+#: feedapi_aggregator.module:351
+msgid "A category named %category already exists. Please enter a unique title."
+msgstr ""
+
+#: feedapi_aggregator.module:370
+msgid "The category %category has been updated."
+msgstr ""
+
+#: feedapi_aggregator.module:379
+msgid "Category %category deleted."
+msgstr ""
+
+#: feedapi_aggregator.module:380
+msgid "The category %category has been deleted."
+msgstr ""
+
+#: feedapi_aggregator.module:390
+msgid "Category %category added."
+msgstr ""
+
+#: feedapi_aggregator.module:390
+msgid "view"
+msgstr ""
+
+#: feedapi_aggregator.module:391
+msgid "The category %category has been added."
+msgstr ""
+
+#: feedapi_aggregator.module:579
+msgid "Category overview"
+msgstr ""
+
+#: feedapi_aggregator.module:580
+msgid "Items"
+msgstr ""
+
+#: feedapi_aggregator.module:580
+msgid "Operations"
+msgstr ""
+
+#: feedapi_aggregator.module:583
+msgid "edit"
+msgstr ""
+
+#: feedapi_aggregator.module:593;723;379;390
+msgid "aggregator"
+msgstr ""
+
+#: feedapi_aggregator.module:631
+msgid "aggregator - @title"
+msgstr ""
+
+#: feedapi_aggregator.module:642
+msgid "Warning"
+msgstr ""
+
+#: feedapi_aggregator.module:643
+msgid "Please create a new category before try categorizing items."
+msgstr ""
+
+#: feedapi_aggregator.module:643
+msgid "You can create categories here."
+msgstr ""
+
+#: feedapi_aggregator.module:680
+msgid "Save categories"
+msgstr ""
+
+#: feedapi_aggregator.module:695
+msgid "in category"
+msgstr ""
+
+#: feedapi_aggregator.module:710
+msgid "read more"
+msgstr ""
+
+#: feedapi_aggregator.module:723
+msgid "aggregated feeds"
+msgstr ""
+
+#: feedapi_aggregator.module:748
+msgid "Currently there is no news item in this category/feed."
+msgstr ""
+
+#: feedapi_aggregator.module:780;812
+msgid "More"
+msgstr ""
+
+#: feedapi_aggregator.module:832
+msgid "%age old"
+msgstr ""
+
+#: feedapi_aggregator.module:851
+msgid "%ago ago"
+msgstr ""
+
+#: feedapi_aggregator.module:890;890
+msgid "blog it"
+msgstr ""
+
+#: feedapi_aggregator.module:891
+msgid "Comment on this news item in your personal blog."
+msgstr ""
+
+#: feedapi_aggregator.module:583;905
+msgid "1 item"
+msgid_plural "@count items"
+msgstr[0] ""
+msgstr[1] ""
+
+#: feedapi_aggregator.module:165
+msgid "access news feeds"
+msgstr ""
+
+#: feedapi_aggregator.module:0
+msgid "feedapi_aggregator"
+msgstr ""
+
+#: feedapi_aggregator.info:0
+msgid "Creates lightweight database entries from feed items. Emulates the Drupal core Aggregator module. Don't run Aggregator module and FeedAPI module at the same time."
+msgstr ""
+
+#: feedapi_aggregator.info:0
+msgid "FeedAPI Add On"
+msgstr ""
+
+#: feedapi_aggregator.install:84
+msgid "Feed (lightweight items)"
+msgstr ""
+
+#: feedapi_aggregator.install:85
+msgid "Aggregates RSS or Atom feeds. Feed items will be turned into lightweight database entries."
+msgstr ""
+
+#: feedapi_aggregator.install:90
+msgid "Body"
+msgstr ""
+

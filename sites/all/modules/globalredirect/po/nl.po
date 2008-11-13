@@ -1,0 +1,35 @@
+# Copyright YEAR NAME <EMAIL@ADDRESS>
+# Generated from file:
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Dutch translation for Global Redirect module\n"
+"POT-Creation-Date: 2007-11-22 17:31+0200\n"
+"PO-Revision-Date: 2007-11-23 20:32+0100\n"
+"Last-Translator: Joep Bär <info@promes.nl>\n"
+"Language-Team: Promes\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"X-Poedit-Language: German\n"
+"X-Poedit-Country: NETHERLANDS\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: globalredirect.module:11
+msgid "This module will do a 301 redirect for all nodes which have an alias but are not using that alias."
+msgstr "Deze module voert een 301 redirect (omleiding) uit voor alle nodes die een alias hebben, maar deze alias niet gebruiken."
+
+#: globalredirect.module:0
+#: globalredirect.info:0
+msgid "globalredirect"
+msgstr "globalredirect"
+
+#: globalredirect.info:0
+msgid "Global Redirect"
+msgstr "Global Redirect"
+
+#: globalredirect.info:0
+msgid "Searches for an alias of the current URL and 301 redirects if found. Stops duplicate content arising when path module is enabled."
+msgstr "Zoekt een alias voor de huidige URL en voert een 301 redirect (omleiding) uit als deze bestaat. Daarmee worden dubbele pagina's vermeden die door het activeren van de Path-module ontstaan."
+

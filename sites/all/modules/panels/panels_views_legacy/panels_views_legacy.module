@@ -1,0 +1,347 @@
+<?php
+// $Id: panels_views_legacy.module,v 1.1.2.9 2008/07/13 19:26:50 sdboyer Exp $
+
+
+/**
+ * @file panels_views_legacy.module
+ *
+ * This module exposes nodes directly to the add content interface.
+ * The panels views module is a recommended replacement that is better suited
+ * for non-admin users.
+ */
+
+/**
+ * Implementation of hook_menu().
+ */
+function panels_views_legacy_menu($may_cache) {
+  if ($may_cache) {
+    $items[] = array(
+      'path' => 'admin/panels/views-legacy',
+      'title' => t('Legacy views'),
+      'access' => user_access('access administration pages'),
+      'type' => MENU_NORMAL_ITEM,
+      'callback' => 'panels_views_legacy_admin',
+      'description' => t('Information about the legacy views content type.'),
+    );
+    return $items;
+  }
+}
+
+/**
+ * Page callback for the very short admin page.
+ */
+function panels_views_legacy_admin() {
+  $output = '<p>';
+  $output .= t('Panels legacy views does not have a normal administrative UI, such as panels pages or mini panels. With this module, all of your views are provided as panes that can be added to any panel display; these panes have many options; because of all of these options, these panes are generally unsuitable for non administrative users. It is recommended that you only use panels views legacy if 1) you are upgrading a site that already uses this kind of view or 2) you do not want the extra work of having to determine which views are available as content. Otherwise, it is recommended you use the normal "Panels views content" module.');
+  $output .= '</p>';
+  return $output;
+}
+
+/**
+ * Implementation of hook_panels_content_types()
+ */
+function panels_views_legacy_panels_content_types() {
+  // Only valid if views module loaded.
+  $items['views'] = array(
+    'title' => t('Legacy views'),
+    'content_types' => 'panels_views_legacy_content_types',
+    'render callback' => 'panels_views_legacy_render',
+    'add callback' => 'panels_views_legacy_add',
+    'edit callback' => 'panels_views_legacy_edit',
+    'title callback' => 'panels_views_legacy_title',
+  );
+  return $items;
+}
+
+/**
+ * Output function for the 'views' content type.
+ *
+ * Outputs a views based on the module and delta supplied in the configuration.
+ */
+function panels_views_legacy_render($conf, $panel_args, $contexts) {
+  if (!is_array($contexts)) {
+    $contexts = array($contexts);
+  }
+
+  // Use clone to make sure this is fresh.
+  $v = views_get_view($conf['view']);
+  if ($v) {
+    $view = drupal_clone($v);
+    if (function_exists('views_access') && !views_access($view)) {
+      return NULL;
+    }
+    $arguments = explode('/', $_GET['q']);
+    $args = $conf['args'];
+
+    foreach ($arguments as $id => $arg) {
+      $args = str_replace("%$id", $arg, $args);
+    }
+
+    foreach ($panel_args as $id => $arg) {
+      $args = str_replace("@$id", $arg, $args);
+    }
+
+    $args = preg_replace(',/?(%\d|@\d),', '', $args);
+    $args = $args ? explode('/', $args) : array();
+
+    if ($conf['panel_args'] && is_array($panel_args)) {
+      $args = array_merge($panel_args, $args);
+    }
+
+    if (is_array($conf['context'])) {
+      foreach ($conf['context'] as $count => $cid) {
+        if ($cid != 'any' && !empty($contexts[$count]) && isset($contexts[$count]->argument)) {
+          array_splice($args, $count, 0, array($contexts[$count]->argument));
+        }
+      }
+    }
+
+    if ($conf['url']) {
+      $view->url = $conf['url'];
+    }
+
+    $block = new stdClass();
+    $block->module = 'views';
+    $block->delta  = $view->name;
+
+    $view_type = $conf['type'] == 'embed' ? 'page' : $conf['type'];
+    $block->subject = views_get_title($view, $view_type);
+    if (!empty($conf['link_to_view'])) {
+      $block->title_link = views_get_url($view, $args);
+    }
+
+    if (!empty($conf['more_link'])) {
+      $block->more = array('href' => views_get_url($view, $args));
+      $view->block_more = FALSE;
+    }
+
+    $pager_id = empty($conf['use_pager']) ? 0 : intval($conf['pager_id']);
+
+    $stored_feeds = drupal_add_feed();
+    $block->content = views_build_view($conf['type'], $view, $args, $pager_id, intval($conf['nodes_per_page']), 0, intval($conf['offset']));
+
+    if (!empty($conf['feed_icons'])) {
+      $new_feeds = drupal_add_feed();
+      if ($diff = array_diff(array_keys($new_feeds), array_keys($stored_feeds))) {
+        foreach ($diff as $url) {
+          $block->feeds[$url] = $new_feeds[$url];
+        }
+      }
+    }
+
+    if (user_access('administer views')) {
+      $block->admin_links['update'] = array(
+        'title' => t('Edit view'),
+        'alt' => t("Edit this view"),
+        'href' => $view->vid ? "admin/build/views/$view->name/edit" : "admin/build/views/add/$view->name",
+        'query' => drupal_get_destination(),
+      );
+    }
+  }
+  return $block;
+}
+
+/**
+ * Return all content types available.
+ */
+function panels_views_legacy_content_types() {
+  $types = array();
+  $views = array();
+  $args  = array();
+  views_load_cache();
+  $arginfo = _views_get_arguments();
+
+  $result = db_query("SELECT * FROM {view_argument}");
+  while ($arg = db_fetch_array($result)) {
+    $args[$arg['vid']][$arg['position']] = $arg;
+  }
+  $result = db_query("SELECT * FROM {view_view}");
+  while ($view = db_fetch_object($result)) {
+    $view->argument = $args[$view->vid];
+
+    $title = views_get_title($view, 'admin');
+    $icon = !empty($view->block) ? 'icon_views_block_legacy.png' : 'icon_views_page_legacy.png';
+
+    $contexts = array();
+    if (!empty($view->argument)) {
+      foreach ($view->argument as $arg) {
+        $contexts[] = new panels_optional_context($arginfo[$arg['type']]['name'], 'any');
+      }
+    }
+    $types[$view->name] = array(
+      'title' => strip_tags($title ? $title : $view->name),
+      'icon' => $icon,
+      'description' => filter_xss_admin($view->description),
+      'required context' => $contexts,
+      'category' => array(t('Views'), -1),
+    );
+    $views[$view->name] = TRUE;
+  }
+
+  views_load_cache();
+  $default_views = _views_get_default_views();
+  $views_status = variable_get('views_defaults', array());
+  foreach ($default_views as $view) {
+    if (!$views[$view->name] &&
+      ($views_status[$view->name] == 'enabled' || (!$views_status[$view->name] && !$view->disabled))) {
+      $title    = views_get_title($view, 'admin');
+      $icon     = !empty($view->block) ? 'icon_views_block_legacy.png' : 'icon_views_page_legacy.png';
+      $contexts = array();
+      if (!empty($view->argument)) {
+        foreach ($view->argument as $arg) {
+          $contexts[] = new panels_optional_context($arginfo[$arg['type']]['name'], 'any');
+        }
+      }
+      $types[$view->name] = array(
+        'title' => strip_tags($title ? $title : $view->name),
+        'icon' => $icon,
+        'description' => filter_xss_admin($view->description),
+        'required context' => $contexts,
+        'category' => array(t('Views'), -1),
+      );
+    }
+  }
+  return $types;
+}
+
+/**
+ * Returns the form for a new view.
+ */
+function panels_views_legacy_add($id, $parents, $conf = array()) {
+  $view = views_get_view($id);
+  if (!$view) {
+    return;
+  }
+  $conf['view'] = $id;
+  if ($view->page) {
+    $conf['type'] = 'page';
+    $conf['nodes_per_page'] = $view->nodes_per_page;
+  }
+  else {
+    $conf['type'] = 'block';
+    $conf['nodes_per_page'] = $view->nodes_per_block;
+  }
+  $conf['type']      = 'embed';
+  $conf['pager_id']  = 1;
+  $conf['use_pager'] = 0;
+  return panels_views_legacy_edit($id, $parents, $conf);
+}
+
+/**
+ * Returns an edit form for a block.
+ */
+function panels_views_legacy_edit($id, $parents, $conf) {
+  $form['view'] = array(
+    '#type' => 'value',
+    '#default_value' => $conf['view'],
+  );
+  $form['type'] = array(
+    '#type' => 'select',
+    '#default_value' => $conf['type'],
+    '#title' => t('View type'),
+    '#description' => t('Select which type of the view to display.'),
+    '#options' => array('page' => t('Page'), 'block' => t('Block'), 'embed' => t('Embedded')),
+  );
+
+  $form['link_to_view'] = array(
+    '#type' => 'checkbox',
+    '#default_value' => $conf['link_to_view'],
+    '#title' => t('Link title to view'),
+    '#description' => t('If checked, the title will be a link to the view.'),
+  );
+
+  $form['more_link'] = array(
+    '#type' => 'checkbox',
+    '#default_value' => $conf['more_link'],
+    '#title' => t('Provide a "more" link that links to the view'),
+    '#description' => t('This is independent of any more link that may be provided by the view itself; if you see two more links, turn this one off. Views will only provide a more link if using the "block" type, however, so if using embed, use this one.'),
+  );
+
+  $form['feed_icons'] = array(
+    '#type' => 'checkbox',
+    '#default_value' => $conf['feed_icons'],
+    '#title' => t('Display feed icons'),
+    '#description' => t('If checked, any feed icons provided by this view will be displayed.'),
+  );
+
+  $form['pager_aligner_start'] = array(
+    '#value' => '<div class="option-text-aligner">',
+  );
+  $form['use_pager'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use pager'),
+    '#default_value' => $conf['use_pager'],
+    '#id' => 'use-pager-checkbox',
+  );
+  $form['pager_id'] = array(
+    '#type' => 'textfield',
+    '#default_value' => $conf['pager_id'],
+    '#title' => t('Pager ID'),
+    '#size' => 4,
+    '#id' => 'use-pager-textfield',
+  );
+  $form['pager_aligner_stop'] = array(
+    '#value' => '</div><div style="clear: both; padding: 0; margin: 0"></div>',
+  );
+
+  $form['nodes_per_page'] = array(
+    '#type' => 'textfield',
+    '#default_value' => $conf['nodes_per_page'],
+    '#title' => t('Num posts'),
+    '#size' => 4,
+    '#description' => t('Select the number of posts to display, or 0 to display all results.'),
+  );
+
+  $form['offset'] = array(
+    '#type' => 'textfield',
+    '#default_value' => $conf['offset'],
+    '#title' => t('Offset'),
+    '#size' => 4,
+    '#description' => t('Offset in the node list or 0 to start at 1st item.'),
+  );
+
+  $form['panel_args'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Send arguments'),
+    '#default_value' => $conf['panel_args'],
+    '#description' => t('Select this to send all arguments from the panel directly to the view. If checked, the panel arguments will come after any context arguments above and precede any additional arguments passed in through the Arguments field below.'),
+  );
+
+  $form['args'] = array(
+    '#type' => 'textfield',
+    '#default_value' => $conf['args'],
+    '#title' => t('Arguments'),
+    '#size' => 30,
+    '#description' => t('Additional arguments to send to the view as if they were part of the URL in the form of arg1/arg2/arg3. You may use %0, %1, ..., %N to grab arguments from the URL. Or use @0, @1, @2, ..., @N to use arguments passed into the panel.'),
+  );
+
+  $form['url'] = array(
+    '#type' => 'textfield',
+    '#default_value' => $conf['url'],
+    '#title' => t('Override URL'),
+    '#size' => 30,
+    '#description' => t('If this is set, override the View URL; this can sometimes be useful to set to the panel URL'),
+  );
+
+  return $form;
+}
+
+/**
+ * Returns the administrative title for a type.
+ */
+function panels_views_legacy_title($conf) {
+  $view = views_get_view($conf['view']);
+  if (empty($view)) {
+    return t('Deleted/missing view @view', array('@view' => $conf['view']));
+  }
+  $title = views_get_title($view, 'admin');
+  return $title ? $title : $view->name;
+}
+
+/**
+ * Don't show Views' blocks; we expose them already.
+ */
+function views_panels_block_info($module, $delta, &$info) {
+  $info = NULL;
+}
+

@@ -1,0 +1,11 @@
+; $Id: panels.info,v 1.2.4.3 2007/06/18 23:17:13 dww Exp $
+name = Panels
+description = Core Panels display functions; provides no external UI, at least one other module (such as Panel pages) should be enabled.
+package = "Panels"
+
+
+; Information added by drupal.org packaging script on 2008-08-05
+version = "5.x-2.0-rc1a"
+project = "panels"
+datestamp = "1217937315"
+

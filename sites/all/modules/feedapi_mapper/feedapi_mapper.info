@@ -1,0 +1,9 @@
+name = FeedAPI Mapper
+description = "Maps feed item elements to node fields."
+dependencies = feedapi feedapi_node
+package = FeedAPI Add On
+; Information added by drupal.org packaging script on 2008-09-08
+version = "5.x-1.0-beta7"
+project = "feedapi_mapper"
+datestamp = "1220876116"
+

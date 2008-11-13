@@ -1,0 +1,255 @@
+GMAP-ARRAY-DICTIONARY.txt
+
+This file defines the attributes available in GMap arrays. This is fairly similar to the GMAP-MACRO-DICTIONARY.txt, but distinct in that it addresses array keys and syntax specific to GMap arrays.
+
+Defaults for map attributes can be set on the GMap settings page, located at admin/settings/gmap
+
+----------------
+BASIC ATTRIBUTES
+----------------
+
+The top level of a GMap array will look something like this:
+<?php
+  $map = array(
+    'id' =>               // id attribute for the map
+    'width' =>            // map width in pixels or %
+    'height' =>           // map height in pixels
+    'latitude' =>         // map center latitude
+    'longitude' =>        // map center longitude
+    'zoom' =>             // zoom level
+    'maptype' =>          // baselayer type
+    'controltype' =>      // size of map controls
+    'behavior' => array(),// various map behavior flags
+    'markers' => array(), // array of points on the map
+    'shapes' => array(),  // array of shapes to overlay on the map
+  );
+?>
+
+
+Attribute:		id
+Values:				id attribute name
+Description:	id for the rendered map element, to distinguish the map from other maps on the same page. Any controls that are synced with the map require a map id.
+Example:			"mymap"
+Notes:				use if you need to access the map from a script, or if you plan to have multiple maps on a page. As of Gmap 1.0, this is no longer required.
+
+Attribute:		width
+Values:				css dimension
+Description:	map width, in valid css dimensions (generally pixels or percent)
+Example:			"100%"
+
+Attribute:		height
+Values:				css dimension
+Description:	map height, in valid css dimensions (generally pixels)
+Example:			"400px"
+
+Attribute:		latitude
+Values:				a latitude
+Description:	the latitude of the initial map center point
+Example:			39.36827914916013
+
+Attribute:		longitude
+Values:				a longitude
+Description:	the longitude of the initial map center point
+Example:			-81.5625
+
+Attribute:		zoom
+Values:				0-17
+Description:	the initial zoom level of the map
+Example:			7
+
+Attribute:		maxzoom
+Values:				0-17
+Description:	the maximum initial zoom level of the map if the 'autozoom' behavior flag is on.
+Example:			7
+
+Attribute:		maptype
+Values:				"Map", "Satellite", "Hybrid", "Terrain"
+Description:	default baselayer
+Example:			"Map"
+Notes:        The most common value is "Map".
+
+Attribute:		controltype
+Values:				"None", "Large", "Small"
+Description:	zoom and pan controls
+Example:			"Small"
+
+Attribute:		align
+Values:				"Right", "Left", "Center"
+Description:	alignment of map on page
+Example:			align=Center
+
+Attribute:		mtc
+Values:				"none", "standard", "hier", "menu"
+Description:	the "map type control" widget used to select different baselayers.
+Example:			"standard"
+Notes:        'standard': buttons ('GMapTypeControl' widget)
+              'hier': buttons + dropdowns ('GHierarchicalMapTypeControl' widget)
+              'menu': dropdown menu ('GMenuMapTypeControl' widget)
+
+Attribute:		baselayers
+Values:				array("Map", "Satellite", "Hybrid", "Physical", ...)
+Description:	an array of enabled baselayer names
+Example:			array("Map", "Satellite", "Hybrid")
+Notes:        Other modules may define additional baselayers; GMap provides the 4 listed above.
+
+Attribute:		styles
+Values:				array('style1' => array(...), 'style2' => array(...), ...)
+Description:	an array of style names and definitions
+Example:			array('line_default' => array('0000ff',5,45,'',0,0), 'poly_default' => array('000000',3,25,'ff0000',45),)
+Notes:        Currently, 'line_default' and 'poly_default' are defined. In the future, there may be the ability to store styles to apply to shapes easily, but it is not yet implemented.
+
+Attribute:    behavior
+Values:       array()
+Description:  an array that contains flags for various map behaviors
+
+  Attribute:		locpic
+  Values:				TRUE, FALSE
+  Description:	set the map up for being used to select a coordinate
+  Example:			FALSE
+  Notes:        Used for incombination with the latitude, longitude, or latlon fields
+  
+  Attribute:		nodrag
+  Values:				TRUE, FALSE
+  Description:	disable dragging
+  Example:			FALSE
+  Notes:        If dragging is disabled, keyboard shortcuts will also be disabled. This replaces the old 'drag' attribute. FALSE allows dragging; TRUE disables dragging.
+  
+  Attribute:		nokeyboard
+  Values:				TRUE, FALSE
+  Description:	disable keyboard shortcuts
+  Example:			TRUE
+  Notes:        FALSE allows keyboard shortcuts; TRUE disables keyboard shortcuts.
+  
+  Attribute:		overview
+  Values:				TRUE, FALSE
+  Description:	enables the 'overview' map control in the bottom right corner
+  Example:			TRUE
+  
+  Attribute:		scale
+  Values:				TRUE, FALSE
+  Description:	displays the map scale indicator
+  Example:			TRUE
+  Notes:        FALSE hides the map scale; TRUE shows the map scale.
+  
+  Attribute:    nomousezoom
+  Attribute:    autozoom
+  Attribute:    dynmarkers
+  Attribute:    collapsehack
+  Attribute:    fatmarkers
+
+--------
+OVERLAYS
+--------
+There are three types of overlays you can place on a map: markers, shapes, and feeds. Each of these classes is represented by a sub-array in the GMap array.
+
+Attribute:		markers
+Values:				array()
+Description:	an array of markers to place on the map
+
+An array describing an individual marker will look like this:
+<?php
+  $marker = array(
+    'options' => array(),
+    'text' => 'popup text',
+    'longitude' => 0.000,
+    'latitude' => 0.000,
+    'markername' => 
+    'offset' => 0,
+  );
+?>
+
+  Attribute:		latitude
+  Values:				a latitude
+  Description:	the latitude of the point
+  Example:			39.36827914916013
+  
+  Attribute:		longitude
+  Values:				a longitude
+  Description:	the longitude of the point
+  Example:			-81.5625
+  
+  Attribute:		markername
+  Values:				the name of a marker icon
+  Description:	marker icons are located in the GMap module's 'marker' directory; names are defined in the .ini files. Optional.
+  Example:			"Light Blue"
+  Notes:        sequential markers are available; for example, if the markername is set to "number", then the icons in the marker directory named 'number1.png', 'number2.png' etc.  will be used. If these don't exist 'number.png' would be used.  If that doesn't exist then the default marker will be used.
+  
+  Attribute:		text
+  Values:				"map bubble text"
+  Description:	text and/or HTML to be displayed in the map bubble when the marker is clicked
+  Example:			"Point A"
+  Notes:        @@@ Bdragon mentioned an "array tabs trick"??
+
+Attribute:		shapes
+Values:				array()
+Description:	an array of shapes to place on the map
+
+A "line" or "polygon" shape will be described by an array that looks like this:
+<?php
+  $shape = array(
+    'type' => "polygon",
+    'points' => array(
+      array(0.000, 0.000),
+      array(0.000, 0.000),
+      array(0.000, 0.000),
+    ),
+    'style' => array("ff0000", 5, 80, "00ff00", 60),
+  );
+?>
+
+
+  Attribute:		type
+  Values:				"line", "polygon", "circle", "rpolygon"
+  Description:	the type of shape to draw
+  Example:			"line"
+  Notes:        "line" is drawn as a GPolyline.
+                "polygon" is drawn as a GPolygon.
+                "circle" and "rpolygon" (regular polygon) are special cases of "polygon"; points are calculated on the fly. The array defining circles and regular polygons looks different from the arrays defining lines and polygons; see below.
+
+  Attribute:		points
+  Values:				array(array(lat1, lon1), array(lat2, lon2), ... , array(latN, lonN))
+  Description:	an array of points defining the shape
+  Example:			array(array(44.205835001, -70.3674316406), array(44.3159879052, -68.6096191406))
+  Notes:        Each point itself is an array with two elements (latitude, longitude). The different shapes have different requirements with respect to points.
+
+                "line" must have at least two points. It is best to break up long lines into shorter segments, because long lines can be buggy--sometimes beginning and ending points are switched.
+                
+                "polygon" should have at least three points; the first and last points should have the same coordinates.
+
+  Attribute:		style
+  Values:				array(stroke color, stroke weight, stroke opacity, fill color, fill opacity)
+  Description:	a "style array"
+  Example:			array("ff0000", 5, 80, "00ff00", 60)
+  Notes:        The elements of this array MUST be in the specified order.
+                
+                Stroke and fill colors should be hex color codes (without the leading "#"); Google Maps does not accept named colors. 
+                
+                The stroke weight is the width of the line or polygon border in pixels. 
+                
+                Stroke and fill opacities should be a percentage between 0 and 100.
+                
+                Fill color and fill opacity are not used for type "line".
+                
+                If shapes of type "line" don't have styles defined, the 'line_default' style will be used; shapes of type "polygon", "circle", and "rpolygon" will use 'poly_defalt'.
+
+                In previous versions of GMap, opacity was specified as a number between 0 and 1; it is now a number between 0 and 100. 
+                
+                On backwards compatibility: there were originally more style options, but they were dependant on xmaps; xmaps is no longer compatible with Google Maps, so these options are now ignored. They are: 'pattern', 'text', 'fillcolor', 'fillopacity'; all except for 'pattern' are now available with different syntax.
+
+  Circles and regular polygons are special cases of "polygon" and have significantly different shape arrays:
+  <?php
+    $shape1 = array(
+      'type' => 'circle',
+      'center' => array(0.000, 0.000),  // center coordinate of the circle
+      'radius' => 100,                  // radius of the circle in kilmeters
+      'style' => array(),               // uses 'poly_default' if not defined
+    );
+  
+    $shape2 = array(
+      'type' => 'rpolygon',
+      'center' => array(0.000, 0.000),  // center coordinate of the circle
+      'numpoints' => 4,                 // number of vertices the polygon should have
+      'point2' => array(0.000, 0.000),  // one vertice of the polygon
+      'style' => array(),               // uses 'poly_default' if not defined
+    );
+  ?>

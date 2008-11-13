@@ -1,0 +1,35 @@
+// $Id: CHANGELOG.txt,v 1.1.2.12 2008/10/10 15:43:00 aronnovak Exp $
+
+FeedAPI 1.4, 2008-10-10
+-----------------------
+- Strip tags from item titles
+- Fix of built-in content-type
+- Various bugfixes
+
+FeedAPI 1.3, 2008-09-01
+-----------------------
+- Full domain/scheme information for tags
+- Better test coverage
+- Various bugfixes
+- Function name changes
+
+FeedAPI 1.2 2008-04-14
+----------------------
+- Allow IP-address feed URLs at SimplePie parser
+- Allow at OPML import to override or not to override feed title and description with the info from OMPL file
+- Allow long URLs (up to 2048 char)
+- Add skip capability of feeds. You can pause automatic feed update
+- Fix a caching-related bug when appears if you move the files directory
+
+FeedAPI 1.1, 2008-03-13 
+-----------------------
+- FeedAPI node prevents empty node titles
+- use hashing for detecting whether feed has changed before processing it
+- don't refresh feed more often than 'FEEDAPI_CRON_MIN_REFRESH_TIME' (1800 seconds)
+- added cross feed deduping http://drupal.org/node/193909
+- fixed FeedAPI time log messages to watchdog on cron http://drupal.org/node/214536#comment-710580
+- added enclosure support in parser_simplepie (by ekes)
+
+FeedAPI 1.0, 2008-01-25
+-----------------------
+- initial release

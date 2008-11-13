@@ -1,0 +1,5 @@
+- Make sure that we scan for broken location table (oid -> eid)
+- api for manipulating genid location instances?
+- cck support -- should be easy now that genid is written...
+- lid editor
+- Remove variable 'gmap_location_map' -- gmap was taking care of it for us but we never used it.

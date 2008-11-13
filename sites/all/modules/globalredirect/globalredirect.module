@@ -1,0 +1,120 @@
+<?php
+// $Id: globalredirect.module,v 1.1.2.4.2.15 2008/09/14 23:16:33 njt1982 Exp $
+
+/**
+ * @file
+ * The Global Redirect module redirects for all paths which have aliases but are not using the aliases which reduces the risk of duplicate content.
+ */
+
+define('GLOBALREDIRECT_FEATURE_DISABLED', -1);
+
+define('GLOBALREDIRECT_TRAILINGZERO_TAXTERM', 1);
+define('GLOBALREDIRECT_TRAILINGZERO_ALL', 2);
+
+define('GLOBALREDIRECT_NONCLEAN2CLEAN_ENABLED', 1);
+
+define('GLOBALREDIRECT_DESLASH_ENABLED', 1);
+
+/**
+ * Implementation of hook_help().
+ */
+function globalredirect_help($section) {
+  switch ($section) {
+    case 'admin/modules#description':
+      return t('This module will do a 301 redirect for all nodes which have an alias but are not using that alias.');
+  }
+}
+
+
+/**
+ * Implementation of hook_init().
+ */
+function globalredirect_init() {
+  /**
+   * We need to do a test to make sure we only clean up URL's for the main request. This stops modules such as
+   * the Ad Module which had its own script in its folder doing a bootstrap which invoked hook_init and caused some banners to get "cleaned up"
+   * See issues: http://drupal.org/node/205810 and http://drupal.org/node/278615
+   */
+  if ($_SERVER['SCRIPT_NAME'] != $GLOBALS['base_path'] .'index.php') return FALSE;
+
+  /**
+   * If the site is in offline mode there is little point doing any of this as you might end up redirecting to a 503.
+   */
+  if (variable_get('site_offline', 0) == 1) return FALSE;
+
+  /**
+   * We need to make sure this hook only fires in certain conditions:
+   *   1) If the 'drupal_get_path' function exists. Sometimes hook_init gets called twice, the first call hasn't included path.inc.
+   *   2) If the callback associated with the request is accessible - this stops the user learning hidden/private url aliases.
+   *   3) If there is a request. There is no point checking the REAL frontpage for an alias.
+   *   4) If the $_POST is empty. The problem which arises here is if a form posts to an source path rather than the alias. GlobalRedirect sometimes interrupts the post and redirects to the alias instead.
+   */
+
+  if (function_exists('drupal_get_path_alias') &&
+      function_exists('_menu_item_is_accessible') &&
+      _menu_item_is_accessible(menu_get_active_item()) &&
+      isset($_REQUEST['q']) &&
+      empty($_POST)) {
+
+    // Store the destination from the $_REQUEST as it breaks things if we leave it in - restore it at the end...
+    if (isset($_REQUEST['destination'])) {
+      $destination = $_REQUEST['destination'];
+      unset($_REQUEST['destination']);
+    }
+
+    // Use drupal_get_normal_path() to allow custom_url_reqwrite to effect $q
+    $q = drupal_get_normal_path($_REQUEST['q']);
+
+    // Get the Query String (minus the 'q'). If none set, set to NULL
+    $query_string = drupal_query_string_encode($_GET, array('q'));
+    if (empty($query_string)) {
+      $query_string = NULL;
+    }
+
+    // If current path is also the frontpage, redirect to http://www.example.com.
+    if (!empty($q) && drupal_is_front_page()) {
+      drupal_goto('', $query_string, NULL, 301);
+    }
+
+    // Trim any trailing slash off the end (eg, 'node/1/' to 'node/1')
+    $request = (bool)variable_get('globalredirect_deslash', GLOBALREDIRECT_DESLASH_ENABLED) ? trim($q, '/') : $q;
+
+    //Optional stripping of "/0". Defaultly disabled
+    switch (variable_get('globalredirect_trailingzero', GLOBALREDIRECT_FEATURE_DISABLED)) {
+      case GLOBALREDIRECT_TRAILINGZERO_TAXTERM :
+        // If 'taxonomy/term/*' only. If not, break out.
+        if (drupal_substr($request, 0, 14) != 'taxonomy/term/') {
+          break;
+        }
+        // If it is, fall through to general trailing zero method
+      case GLOBALREDIRECT_TRAILINGZERO_ALL :
+        // If last 2 characters of URL are /0 then trim them off
+        if (drupal_substr($request, -2) == '/0') {
+          $request = rtrim($request, '/0');
+        }
+    }
+
+
+    // Check the path (eg, node/123) for an request.
+    $alias = drupal_get_path_alias($request);
+
+    // If alias is different to the request, redirect...
+    if ($alias != $_REQUEST['q']) {
+      drupal_goto($alias, $query_string, NULL, 301);
+    }
+
+    // If the trimmed request differs to the request then redirect (basically, de-slash the source path).
+    if ($request != $q) {
+      drupal_goto($request, $query_string, NULL, 301);
+    }
+
+    // If no alias was returned, the final check is to direct non-clean to clean - if clean is enabled.
+    if ((bool)variable_get('globalredirect_nonclean2clean', GLOBALREDIRECT_NONCLEAN2CLEAN_ENABLED) && (bool)variable_get('clean_url', 0) && strpos(request_uri(), '?q=')) {
+      drupal_goto($request, $query_string, NULL, 301);
+    }
+
+    // Restore the destination from earlier so its available in other places.
+    if (isset($destination)) $_REQUEST['destination'] = $destination;
+  }
+}
+

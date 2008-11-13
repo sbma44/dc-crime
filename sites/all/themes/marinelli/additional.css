@@ -1,0 +1,92 @@
+#gmap-auto1map-locpick_latitude0-wrapper, #gmap-auto1map-locpick_longitude0-wrapper, #edit-locations-0-additional-wrapper, #edit-locations-0-country-wrapper, #edit-locations-0-delete-location-wrapper
+{
+    display: none;
+}
+
+#page
+{
+    border: 12px solid #fff !important;
+}
+
+fieldset.location .description
+{
+    display: none;
+    margin-bottom: 1em;
+}
+
+fieldset.location fieldset
+{
+    display: none;
+}
+
+#header p a
+{
+    color:#fff;
+    position:relative;
+    text-transform:uppercase;
+    top:-68px;
+    left: 360px;
+    text-align: right;
+}
+
+#header h1.sitetitle
+{
+    color:#fff !important;
+    position:relative;
+    text-transform:uppercase;
+    top:-68px;
+    text-align: right;
+}
+
+#header h1.sitetitle a
+{
+    color:#054B81 !important;    
+}
+
+a.rss-notification-link
+{
+    padding-left: 20px;
+    background-repeat: no-repeat;
+    background-position: 5px left;    
+    background-image: url(../../../../misc/feed.png);
+}
+
+#comments
+{
+    border-top:4px solid #EEEEEE;
+    clear: right;
+    margin-top: 1em;
+}
+
+.node-crime .gmap-gmap
+{
+    border: 1px solid #eee;
+    margin-bottom: 1em;
+}
+
+.node-crime .crime-data-item
+{
+   margin-bottom: 0.5em;
+}
+
+.node-crime .crime-data-item.offense
+{
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+.node-crime .crime-data-item label
+{
+    font-weight: bold;
+}
+
+#comments ul.tips
+{
+    margin-left: 2em;
+}
+
+.metanode
+{
+    font-style: normal;
+    font-family: "Lucida Grande","Lucida Sans Unicode",helvetica,verdana,arial,sans-serif;
+}

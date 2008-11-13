@@ -1,0 +1,11 @@
+; $Id: parser_common_syndication.info,v 1.1.2.6 2008/04/11 19:46:33 aronnovak Exp $
+name = "Common syndication parser"
+description = "Provides an XML parser for FeedAPI modules. Requires PHP5."
+package = FeedAPI Add On
+dependencies = feedapi
+
+; Information added by drupal.org packaging script on 2008-10-10
+version = "5.x-1.4"
+project = "feedapi"
+datestamp = "1223654422"
+

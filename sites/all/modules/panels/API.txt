@@ -1,0 +1,4 @@
+# $Id: API.txt,v 1.2.6.3 2008/05/23 22:17:37 sdboyer Exp $
+
+The most current (usually -dev) version of the Panels 2 API Documentation can be
+found online at http://doxy.samboyer.org/panels2/. 

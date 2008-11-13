@@ -1,0 +1,10 @@
+$Id: CREDITS.txt,v 1.1 2008/01/24 05:28:17 ankur Exp $
+
+Originally developed and implemented by:
+  Ankur Rishi  (user name 'ankur':  http://drupal.org/user/11703 )
+
+
+Maintained by:
+  Brandon Bergren (user name 'Bdragon' http://drupal.org/user/53801 )
+  Bruno Massa (user name 'brmassa' http://drupal.org/user/67164 )
+

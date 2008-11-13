@@ -1,0 +1,11 @@
+; $Id: feedapi_aggregator.info,v 1.1.2.5 2008/04/11 19:46:33 aronnovak Exp $
+name = FeedAPI Aggregator
+description = "Creates lightweight database entries from feed items. Emulates the Drupal core Aggregator module. Don't run Aggregator module and FeedAPI module at the same time."
+dependencies = feedapi
+package = FeedAPI Add On
+
+; Information added by drupal.org packaging script on 2008-10-10
+version = "5.x-1.4"
+project = "feedapi"
+datestamp = "1223654422"
+

@@ -1,0 +1,11 @@
+; $Id $
+name = "Global Redirect"
+description = "Searches for an alias of the current URL and 301 redirects if found. Stops duplicate content arising when path module is enabled."
+dependencies = path
+package = Global Redirect
+
+; Information added by drupal.org packaging script on 2008-09-15
+version = "5.x-1.x-dev"
+project = "globalredirect"
+datestamp = "1221437162"
+

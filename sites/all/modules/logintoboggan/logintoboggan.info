@@ -1,0 +1,10 @@
+; $Id: logintoboggan.info,v 1.2.2.2 2007/06/18 23:06:50 dww Exp $
+
+name = "LoginToboggan"
+description = "Improves Drupal's login system."
+
+; Information added by drupal.org packaging script on 2008-06-09
+version = "5.x-1.3"
+project = "logintoboggan"
+datestamp = "1213041313"
+

@@ -1,0 +1,44 @@
+2008-02-03  Bdragon  (53081)
+
+  * location.module (location_nodeapi): #216291 by Dave Cohen: Fix accidental use of nid instead of vid.
+  Rewrite RSS generation.
+
+  * contrib/location_fax/location_fax.install, contrib/location_phone/location_phone.install:
+  Postgresql fixes.
+
+  * supported/location.de.inc: As noted in #186891, t-info has changed their mapping service. Adapt the code accordingly.
+
+  * location.inc: Remove debugging code.
+  (_location_time_difference): Remove.
+
+  * contrib/location_views/location_views.module: #208265 by dgtlmoon: Views integration module fixups.
+  #135747: Remove t() from global scope, this was causing a serious slowdown.
+
+2008-01-28  Bdragon  (53081)
+
+  * location.module: Fix call_time_pass_by_reference errors in wundo's patch.
+
+2008-01-24  wundo  (25523)
+
+  * location.module (location_form_alter): #214007: Split location_form_alter into small functions.
+  Fix code style issues.
+
+2008-01-24  Bdragon  (53081)
+
+  * revert to DRUPAL-5 again to clean up the mess.
+
+  * Reintegrate changes from previous revisions of files.
+
+  * location.module (_location_effective_user_setting): Removed.
+  General cleanup.
+
+
+2008-01-23  Bdragon  (53081)
+
+  * location.mysql, location_upgrade.php: Removed.
+
+  * location.module: General cleanup.
+
+  * location.module (location_map_link_options_page): Removed, rolled into menu hook.
+  (location_menu): Made cacheable items cacheable.
+  (hook_perm): Moved to the top section.

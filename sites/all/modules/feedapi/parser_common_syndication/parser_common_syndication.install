@@ -1,0 +1,77 @@
+<?php
+// $Id: parser_common_syndication.install,v 1.1.2.8 2008/09/10 08:11:59 aronnovak Exp $
+
+/**
+ * Implementation of hook_install().
+ */
+function parser_common_syndication_install() {
+  switch ($GLOBALS['db_type']) {
+    case 'mysqli':
+    case 'mysql':
+      db_query("CREATE TABLE {parser_common_syndication} (
+        url varchar(255) NOT NULL default '',
+        etag TEXT,
+        last_modified TEXT)
+      "); 
+      break;
+    case 'pgsql':
+      db_query("CREATE TABLE {parser_common_syndication} (
+        url varchar(255) NOT NULL default '',
+        etag TEXT,
+        last_modified TEXT)
+      ");
+      break;
+  }
+  // Set the parser of defaultly shipped processors if it's not done previously
+  $default_processors = array('feed', 'feedapi_aggregator');
+  $set_common = array("parsers" => array("parser_common_syndication" => array("enabled" => TRUE, "weight" => 0)));
+  foreach ($default_processors as $processor) {
+    $settings = variable_get('feedapi_settings_'. $processor, FALSE);
+    if (!isset($settings['parsers'])) {
+        $settings = is_array($settings) ? array_merge($settings, $set_common) : $set_common;
+        variable_set('feedapi_settings_'. $processor, $settings);
+    }
+  }
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function parser_common_syndication_uninstall() {
+  db_query("DROP TABLE {parser_common_syndication}");
+  // Empty cache directory
+  $cache_dir = variable_get('parser_common_syndication_cache', FALSE);
+  if (is_dir($cache_dir)) {
+    $dp = opendir($cache_dir);
+    while (($file = readdir($dp)) !== FALSE) {
+      if (is_file($file)) {
+        unlink($cache_dir .'/'. $file);
+      }
+    }
+    closedir($dp);
+    rmdir($cache_dir);
+  }
+  variable_del('parser_common_syndication_cache');
+}
+
+function parser_common_syndication_update_1() {
+  $ret = array();
+  switch ($GLOBALS['db_type']) {
+    case 'mysqli':
+    case 'mysql':
+      $ret[] = update_sql("CREATE TABLE if not exists {parser_common_syndication} (
+        url varchar(255) NOT NULL default '',
+        etag TEXT,
+        last_modified TEXT)
+      "); 
+      break;
+    case 'pgsql':
+      $ret[] = update_sql("CREATE TABLE {parser_common_syndication} (
+        url varchar(255) NOT NULL default '',
+        etag TEXT,
+        last_modified TEXT)
+      ");
+      break;
+  }
+  return $ret;
+}

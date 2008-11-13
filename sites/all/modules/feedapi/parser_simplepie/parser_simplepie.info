@@ -1,0 +1,11 @@
+; $Id: parser_simplepie.info,v 1.1.2.9 2008/09/16 12:45:57 aronnovak Exp $
+name = SimplePie parser
+description = "Provides an XML parser for FeedAPI modules. Uses SimplePie library. Requires SimplePie 1.01+."
+package = FeedAPI Default
+dependencies = feedapi
+
+; Information added by drupal.org packaging script on 2008-10-10
+version = "5.x-1.4"
+project = "feedapi"
+datestamp = "1223654422"
+

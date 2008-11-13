@@ -1,0 +1,252 @@
+<?php
+// $Id: feedapi_node_views.module,v 1.1.2.8 2008/10/10 13:19:30 aronnovak Exp $
+
+/**
+ * Add views functionality to FeedAPI Node
+ * Offer feed-related arguments
+ */
+
+/**
+ * Implementation of hook_views_tables().
+ */
+function feedapi_node_views_views_tables() {
+  $tables['feedapi_node_item'] = array(
+    'name' => 'feedapi_node_item',
+    'join' => array(
+      'left' => array(
+        'table' => 'node',
+        'field' => 'nid'
+      ),
+      'right' => array(
+        'field' => 'nid'
+      )
+    ),
+    'fields' => array(
+      'url' => array(
+        'name' => t('FeedAPI node: Original url'),
+        'handler' => 'feedapi_node_views_handler_field_url',
+           'help' => t('The original url for a feed item'),
+           'option' => array(
+             '#type' => 'select',
+             '#options' => array(
+               'title_link' => t('Item\'s Title with link'),
+               'link' => t('With link'),
+               'nolink' => t('Without link'),
+             ),
+           ),
+        ),
+      ),
+    'sorts' => array(
+      'timestamp' => array(
+        'name' => t('FeedAPI node: Time of the news item'),
+        'handler' => 'views_handler_sort_data',
+        'option' => views_handler_sort_date_options(),
+        'help' => t('Sort by the arrival date for a feed item.')
+      )
+    )
+  );
+  $tables['feedapi_node_item_feed'] = array(
+    'name' => 'feedapi_node_item_feed',
+    'join' => array(
+      'left' => array(
+        'table' => 'node',
+        'field' => 'nid',
+      ),
+      'right' => array(
+        'field' => 'feed_item_nid'
+      )
+    ),
+    'fields' => array(
+      'feed_nid' => array(
+        'name' => t('FeedAPI node: Parent feed'),
+        'handler' => 'feedapi_node_views_handler_field_feed_nid',
+        'option' => array(
+          '#type' => 'select',
+          '#options' => array(
+            'link' => 'As link',
+            'nolink_to_feeds' => 'As link to feeds',
+            'link_to_site' => 'As link to site',
+            'nolink' => 'Without link',
+          ),
+        ),
+      ),
+    ),
+    'filters' => array(
+      'feed_nid' => array(
+        'name' => t('FeedAPI node: Parent Feed'),
+        'option' => 'integer',
+        'operator' => views_handler_operator_gtlt(),
+        'help' => t('This allows you to filter feed items based on parent feed. You should supply the feed\'s nid.'),
+      )
+    )
+  );
+  return $tables;
+}
+
+/**
+ * feed_nid handler
+ */
+function feedapi_node_views_handler_field_feed_nid($fieldinfo, $fielddata, $value, $data) {
+  if (!$node = node_load($value)) {
+    return;
+  }
+  if ($fielddata['options'] == 'nolink') {
+    return check_plain($node->title);
+  }
+  elseif ($fielddata['options'] == 'nolink_to_feeds') {
+    return l($node->title, "feed-item/$node->nid");
+  }
+  elseif ($fielddata['options'] == 'link_to_site') {
+   return l($node->title, $node->feed->link);
+  }
+  return l($node->title, "node/$node->nid");
+}
+
+/** 
+ * Feed item node URL handler.
+ */
+function feedapi_node_views_handler_field_url($fieldinfo, $fielddata, $value, $data) {
+  $url = $data->feedapi_node_item_url;
+  if ($fielddata['options'] == 'title_link' ) {
+    if (($node = node_load($data->nid)) ) {
+       return l($node->title, $url);
+     }
+     return l(t('n/a'), $url);
+  }
+  elseif ($fielddata['options'] == 'link' ) {
+    return l($url, $url);
+  }
+  return check_plain($url);
+}
+
+/**
+ * Implementation of hook_views_arguments().
+ */
+function feedapi_node_views_views_arguments() {
+  $arguments = array(
+    'feed_nid' => array(
+      'name' => t('FeedAPI Item: Parent Feed'),
+      'handler' => 'views_handler_arg_feed_nid',
+      'help' => t('This argument will find all feed items for the specified feed node id.'),
+    ),
+  );
+  return $arguments;
+}
+
+/**
+ * Pass in a URL argument to find all feed items for a specific feed node id.
+ */
+function views_handler_arg_feed_nid($op, &$query, $a1, $a2 = '') {
+  switch ($op) {
+    case 'summary':
+      $query->ensure_table('feedapi_node_item');
+      $query->add_field('feed_nid', 'feedapi_node_item');
+      $query->add_field('title', 'node');
+      $query->add_where('feedapi.nid IS NOT NULL');
+      $fieldinfo['field'] = 'node.nid';
+      return $fieldinfo;
+    case 'sort':
+      $query->add_orderby('feedapi_node_item', 'timestamp', $a1);
+      break;
+    case 'filter':
+      $join = array();
+      $join['left']['table'] = 'node';
+      $join['left']['field'] = 'nid';
+      $join['right']['table'] = 'feedapi_node_item_feed';
+      $join['right']['field'] = 'feed_item_nid';
+      $query->add_table('feedapi_node_item_feed', TRUE, 1, $join);
+      $query->add_field('feed_item_nid', 'feedapi_node_item_feed');
+      $query->add_where('feedapi_node_item_feed.feed_nid = %d', $a2);
+      break;
+    case 'link':
+      $query->num_nodes .= format_plural($query->num_nodes, ' item', ' items');
+      return l($query->title, "$a2/$query->fpnid");
+    case 'title':
+      if ($query) {
+        $title = db_result(db_query('SELECT title FROM {node} WHERE nid = %d', $query));
+        return check_plain($title);
+      }
+  }
+}
+
+/*
+ * Format a field as a link to the book parent node
+ */
+function views_handler_field_feed_parent_title($fieldinfo, $fielddata, $value, $data) {
+  return l($value, "node/$data->feed_parent_node_nid");
+}
+
+function views_handler_field_feed_parent_title_nl($fieldinfo, $fielddata, $value, $data) {
+  return check_plain($value);
+}
+
+/**
+ * Implementation of hook_views_default_views().
+ */
+function feedapi_node_views_views_default_views() {
+  // feeds overview page
+  $view = new stdClass();
+  $view->name = 'feeds';
+  $view->description = t('Show a listing of all feed items for a feed');
+  $view->access = array();
+  $view->view_args_php = '';
+  $view->page = TRUE;
+  $view->page_title = t('Feed items');
+  $view->page_header = '';
+  $view->page_header_format = '1';
+  $view->page_footer = '';
+  $view->page_footer_format = '1';
+  $view->page_empty = t('No feed items found.');
+  $view->page_empty_format = '1';
+  $view->page_type = 'teaser';
+  $view->url = 'feed-item';
+  $view->use_pager = TRUE;
+  $view->nodes_per_page = '10';
+  $view->sort = array(
+    array(
+      'tablename' => 'node',
+      'field' => 'created',
+      'sortorder' => 'DESC',
+      'options' => 'normal',
+    ),
+  );
+  $view->argument = array(
+    array(
+      'type' => 'feed_nid',
+      'argdefault' => -1,
+      'title' => '%1',
+      'options' => '',
+      'wildcard' => '',
+      'wildcard_substitution' => '',
+    ),
+  );
+  $view->filter = array (
+    array (
+      'tablename' => 'node',
+      'field' => 'status',
+      'operator' => '=',
+      'options' => '',
+      'value' => '1',
+    ),
+  );
+  $views[$view->name] = $view;
+  return $views;
+}
+
+/**
+ * Implementation of hook_link().
+ * Provide link for feedapi_node processor's feed to get instant access to default view
+ */
+function feedapi_node_views_link($type, $node = NULL, $teaser = FALSE) {
+  if ($type == 'node') {
+    if (count($node->feed->processors) > 0) {
+      if (in_array('feedapi_node', $node->feed->processors)) {
+        $links['view_items'] = array(
+          'title' => t('Feed items'),
+          'href' => 'feed-item/'. $node->nid
+        );
+      }
+    }
+    return $links;
+  }
+}

@@ -1,0 +1,45 @@
+<?php
+// $Id: jquery_update.install,v 1.1.2.3 2008/07/15 23:13:55 sun Exp $
+
+/**
+ * @file
+ * Install file for jQuery Update.
+ */
+
+/**
+ * Implementation of hook_requirements().
+ */
+function jquery_update_requirements($phase) {
+  $requirements = array();
+  $t = get_t();
+  switch ($phase) {
+    case 'install':
+    case 'runtime':
+      $path = drupal_get_path('module', 'jquery_update') . '/misc/jquery.js';
+      if (file_exists($path) && file_exists('misc/jquery.js') && md5_file($path) != md5_file('misc/jquery.js')) {
+        $requirements['jquery'] = array(
+          'title' => $t('Please copy jQuery'),
+          'description' => $t('In order for the jQuery Update module to work correctly, please copy the file at %mod and use it to replace %core.', array('%core' => 'misc/jquery.js', '%mod' => $path)),
+          'severity' => $phase == 'install' ? REQUIREMENT_WARNING : REQUIREMENT_ERROR,
+          'value' => $t('Copy jquery.js'),
+        );
+      }
+      elseif (!file_exists($path)) {
+        $requirements['jquery'] = array(
+          'title' => $t('jquery.js no longer exists in the jQuery Update directory'),
+          'description' => $t('You probably <em>moved</em> rather than <em>copied</em> the jquery.js file from %mod to %core. You should leave a copy of this file in the module directory so that will not lose this file when you upgrade to another revision of Drupal.', array('%core' => 'misc/jquery.js', '%mod' => $path)),
+          'severity' => $phase == 'install' ? REQUIREMENT_WARNING : REQUIREMENT_ERROR,
+          'value' => $t('Copy jquery.js'),
+        );
+      }
+      elseif ($phase == 'runtime') {
+        $requirements['jquery'] = array(
+          'title' => $t('jQuery Update'),
+          'description' => $t('The current installed version of jQuery is !version', array('%core' => 'misc/jquery.js', '%mod' => $path, '!version' => '<strong><script>document.write($().jquery);</script><noscript>javascript not enabled</noscript></strong>')),
+          'severity' => REQUIREMENT_OK,
+          'value' => $t('Installed correctly'),
+        );
+      }
+  }
+  return $requirements;
+}

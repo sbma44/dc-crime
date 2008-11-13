@@ -1,0 +1,333 @@
+<?php
+// $Id: feedapi.install,v 1.5.2.32 2008/10/10 10:12:59 aronnovak Exp $
+
+/**
+ * Implementation of hook_install().
+ */
+function feedapi_install() {
+  switch ($GLOBALS['db_type']) {
+    case 'mysqli':
+    case 'mysql':
+      db_query("CREATE TABLE if not exists {feedapi} (
+        nid int(10) unsigned NOT NULL default '0',
+        url text,
+        feed_type varchar(50) NOT NULL default '',
+        processors varchar(255) NOT NULL default '',
+        parsers varchar(255) NOT NULL default '',
+        checked int(10) NOT NULL default '0',
+        hash varchar(32),
+        link text,
+        settings longtext,
+        half_done tinyint,
+        skip tinyint(1) NOT NULL default '0',
+        KEY(skip),
+        PRIMARY KEY(nid))
+      "); 
+      db_query("CREATE TABLE {feedapi_stat} (
+        id INT(10) unsigned NOT NULL default '0',
+        type VARCHAR(64) NOT NULL,
+        timestamp INT(11) NOT NULL,
+        time VARCHAR(20) NOT NULL,
+        value INT(11) NOT NULL,
+        INDEX (id, type, timestamp, time));
+      ");
+      break;
+    case 'pgsql':
+      db_query("CREATE TABLE {feedapi} (
+        nid int NOT NULL default '0',
+        url text,
+        feed_type varchar(50) NOT NULL default '',
+        processors varchar(255) NOT NULL default '',
+        parsers varchar(255) NOT NULL default '',
+        checked integer NOT NULL,
+        hash varchar(32),
+        link text,
+        settings text,
+        half_done smallint,
+        skip smallint NOT NULL default '0',
+        PRIMARY KEY(nid))
+      ");
+      db_query("CREATE TABLE {feedapi_stat} (
+        id int NOT NULL default '0',
+        type VARCHAR(64) NOT NULL,
+        timestamp INT NOT NULL,
+        time VARCHAR(20) NOT NULL,
+        value INT NOT NULL)
+      ");
+      db_query("CREATE INDEX {feedapi_stat}_id_type_timestamp_time_idx ON {feedapi_stat} (id, type, timestamp, time)");
+      db_query("CREATE INDEX {feedapi}_skip_idx ON {feedapi} (skip)");
+      break;
+  }
+  // This value warrants that og, taxonomy and similar modules does their job before feedapi. This is important
+  // because of for example feedapi_inherit or whatever processor which needs a 3rd-party processed data.
+  db_query("UPDATE {system} SET weight = 5 WHERE name = 'feedapi'");
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function feedapi_uninstall() {
+  switch ($GLOBALS['db_type']) {
+    case 'mysqli':
+    case 'mysql':
+    case 'pgsql':
+      db_query("DROP TABLE {feedapi}");
+      db_query("DROP TABLE {feedapi_stat}");
+      break;
+  }
+  variable_del("feedapi_show_feed_origin_link");
+  variable_del("feedapi_refresh_once");
+  variable_del("feedapi_form_create");
+  variable_del("feedapi_cron_max");
+  variable_del("feedapi_allowed_html_tags");
+  variable_del("feedapi_allow_html_all");
+  variable_del("feedapi_statistics_queue");
+  variable_del('feedapi_cron_percentage');
+  $types = array_keys(node_get_types());
+  foreach ($types as $type) {
+    variable_del("feedapi_settings_". $type);
+    variable_del("feedapi_". $type);
+  }
+}
+
+function feedapi_update_1() {
+  $ret = array();
+  switch ($GLOBALS['db_type']) {
+    case 'mysqli':
+    case 'mysql':
+      $ret[] = update_sql("ALTER TABLE {feedapi}
+        DROP COLUMN refresh,
+        ADD COLUMN statistics longtext,
+        ADD COLUMN half_done tinyint
+      ");
+      break;
+    case 'pgsql':
+      $ret[] = update_sql("ALTER TABLE {feedapi}
+        DROP COLUMN refresh,
+        ADD COLUMN statistics text,
+        ADD COLUMN half_done smallint
+      ");
+  }
+  variable_del("feedapi_cron_max");
+  variable_del("feedapi_refresh_once");
+  return $ret;
+}
+
+function feedapi_update_2() {
+  $ret = array();
+  switch ($GLOBALS['db_type']) {
+    case 'mysqli':
+    case 'mysql':
+      $ret[] = update_sql("ALTER TABLE {feedapi}
+        ADD COLUMN update_existing tinyint default '1'
+      ");
+      break;
+    case 'pgsql':
+      $ret[] = update_sql("ALTER TABLE {feedapi}
+        ADD COLUMN update_existing smallint default '1'
+      ");
+  }
+  return $ret;
+}
+
+function feedapi_update_3() {
+  $ret = array();
+  switch ($GLOBALS['db_type']) {
+    case 'mysqli':
+    case 'mysql':
+      $result = db_query('SELECT n.nid, n.type, f.items_delete, f.update_existing FROM {feedapi} f JOIN {node} n ON n.nid = f.nid');
+      while ($feed = db_fetch_object($result)) {
+        if ($settings = _feedapi_get_settings(array('node_type' => $feed->type, 'nid' => $feed->nid))) {
+          if (!isset($settings['refresh_on_create'])) {
+            $settings['refresh_on_create'] = 0;
+          }
+          if (isset($settings['feedapi_update_existing'])) {
+            $settings['update_existing'] = $settings['feedapi_update_existing'];
+          }
+          else {
+            $settings['update_existing'] = $feed->update_existing;
+          }
+          if (isset($settings['feedapi_items_delete'])) {
+            $settings['items_delete'] = $settings['feedapi_items_delete'];
+          }
+          else {
+            $settings['items_delete'] = $feed->items_delete;
+          }
+          _feedapi_store_settings(array('nid' => $feed->nid), $settings);
+        }
+      }
+      $ret[] = update_sql("ALTER TABLE {feedapi} DROP COLUMN items_delete");
+      $ret[] = update_sql("ALTER TABLE {feedapi} DROP COLUMN update_existing");
+      break;
+    case 'pgsql':
+      $result = db_query('SELECT n.nid, n.type, f.items_delete, f.update_existing FROM {feedapi} f JOIN {node} n ON n.nid = f.nid');
+      while ($feed = db_fetch_object($result)) {
+        if ($settings = _feedapi_get_settings(array('node_type' => $feed->type, 'nid' => $feed->nid))) {
+          if (!isset($settings['refresh_on_create'])) {
+            $settings['refresh_on_create'] = 0;
+          }
+          if (isset($settings['feedapi_update_existing'])) {
+            $settings['update_existing'] = $settings['feedapi_update_existing'];
+          }
+          else {
+            $settings['update_existing'] = $feed->update_existing;
+          }
+          if (isset($settings['feedapi_items_delete'])) {
+            $settings['items_delete'] = $settings['feedapi_items_delete'];
+          }
+          else {
+            $settings['items_delete'] = $feed->items_delete;
+          }
+          _feedapi_store_settings(array('nid' => $feed->nid), $settings);
+        }
+      }
+      $ret[] = update_sql("ALTER TABLE {feedapi} DROP COLUMN items_delete");
+      $ret[] = update_sql("ALTER TABLE {feedapi} DROP COLUMN update_existing");
+      break;
+  }
+  return $ret;
+}
+
+function feedapi_update_4() {
+  $ret = array();
+  switch ($GLOBALS['db_type']) {
+    case 'mysqli':
+    case 'mysql':
+       $ret[] = update_sql("CREATE TABLE {feedapi_stat} (
+        id INT(10) unsigned NOT NULL default '0',
+        type VARCHAR(64) NOT NULL,
+        timestamp INT(11) NOT NULL,
+        time VARCHAR(20) NOT NULL,
+        value INT(11) NOT NULL,
+        INDEX (type, timestamp, time));
+      ");
+      break;
+    case 'pgsql':
+      $ret[] = update_sql("CREATE TABLE feedapi_stat (
+        id int NOT NULL default '0',
+        type VARCHAR(64) NOT NULL,
+        timestamp INT NOT NULL,
+        time VARCHAR(20) NOT NULL,
+        value INT NOT NULL)
+      ");
+      $ret[] = update_sql("CREATE INDEX type_index on feedapi_stat(type)");
+      $ret[] = update_sql("CREATE INDEX timestamp_index on feedapi_stat(timestamp)");
+      $ret[] = update_sql("CREATE INDEX time_index on feedapi_stat(time)");
+      $ret[] = update_sql("CREATE INDEX id_index on feedapi_stat(id)");
+      break;
+  }
+  $result = db_query("SELECT nid, statistics FROM {feedapi}");
+  while ($stat = db_fetch_array($result)) {
+    $id = $stat["nid"];
+    $stat = unserialize($stat['statistics']);
+    $stat_fields = is_array($stat) ?  array_keys($stat) : array();
+    foreach ($stat_fields as $field) {
+      $timestamp = time();
+      $time = date("Y-m-d H:i", $timestamp);
+      foreach ($stat[$field] as $val) {
+        $ret[] = update_sql("INSERT INTO {feedapi_stat} (id, value, time, timestamp, type) VALUES (%d, %d, '%s', %d, '%s')", $id, $val, $time, $timestamp, $field);
+      }
+    }
+  }
+  $ret[] = update_sql("ALTER TABLE {feedapi} DROP COLUMN statistics");
+  return $ret;
+}
+
+function feedapi_update_5() {
+  $ret = array();
+  $ret[] = update_sql("UPDATE {system} SET weight = 5 WHERE name = 'feedapi'");
+  return $ret;
+}
+
+function feedapi_update_6() {
+  $ret = array();
+  $ret[] = update_sql("ALTER TABLE {feedapi} ADD COLUMN hash varchar(32)");
+  return $ret;  
+}
+
+function feedapi_update_7() {
+  $ret = array();
+  switch ($GLOBALS['db_type']) {
+    case 'mysqli':
+    case 'mysql':
+      break;
+    case 'pgsql':
+      $ret[] = update_sql("DROP INDEX type_index");
+      $ret[] = update_sql("DROP INDEX timestamp_index");
+      $ret[] = update_sql("DROP INDEX time_index");
+      $ret[] = update_sql("DROP INDEX id_index");
+      $ret[] = update_sql("CREATE INDEX {feedapi_stat}_id_type_timestamp_time_idx ON {feedapi_stat} (id, type, timestamp, time)");
+      break;
+  }
+  return $ret;
+}
+
+function feedapi_update_8() {
+  $ret = array();
+  $ret[] = update_sql("ALTER TABLE {feedapi} DROP COLUMN update_existing");
+  return $ret;
+}
+
+function feedapi_update_9() {
+  $ret = array();
+  switch ($GLOBALS['db_type']) {
+    case 'mysqli':
+    case 'mysql':
+      $ret[] = update_sql("ALTER TABLE {feedapi} ADD skip TINYINT( 1 ) NOT NULL DEFAULT '0' AFTER half_done");
+      $ret[] = update_sql("ALTER TABLE {feedapi} ADD INDEX ( skip ) ;");
+      break;
+    case 'pgsql':
+      db_add_column($ret, 'feedapi', 'skip', 'smallint', array('not null' => TRUE, 'default' => 0));
+      $ret[] = update_sql("CREATE INDEX {feedapi}_skip_idx ON {feedapi} (skip)");
+      break;
+  }
+  return $ret;
+}
+
+function feedapi_update_10() {
+  $ret = array();
+  switch ($GLOBALS['db_type']) {
+    case 'mysqli':
+    case 'mysql':
+      $ret[] = update_sql("ALTER TABLE {feedapi} CHANGE url url TEXT");
+      $ret[] = update_sql("ALTER TABLE {feedapi} CHANGE link link TEXT");
+      break;
+    case 'pgsql':
+      db_change_column($ret, 'feedapi', 'url', 'url', 'text', array('default' => "", 'not null' => TRUE));
+      db_change_column($ret, 'feedapi', 'link', 'link', 'text', array('default' => "", 'not null' => TRUE));
+      break;
+  }
+  return $ret;
+}
+
+/**
+ * Check out if the built-in content-type has an enabled parser.
+ */
+function feedapi_update_11() {
+  $default_processor = 'feed';
+  // Determine if the installation is affected
+  $affected = FALSE;
+  $settings = variable_get('feedapi_settings_'. $default_processor, FALSE);
+  if (!isset($settings['parsers'])) {
+    $affected = TRUE;
+  }
+  else {
+    foreach ($settings['parsers'] as $parser => $setting) {
+      if (!module_exists($parser) && $setting['enabled']) {
+        $affected = TRUE;
+      }
+    }
+  }
+  
+  if ($affected) {
+    // Set the parser of defaultly shipped processors if it's not done previously
+    $parsers = module_implements('feedapi_feed');
+    if (count($parsers) > 0) {
+      $set_processor = array("parsers" => array(array_pop($parsers) => array("enabled" => TRUE, "weight" => 0)));
+      $settings = is_array($settings) ? array_merge($settings, $set_processor) : $set_processor;
+      variable_set('feedapi_settings_'. $default_processor, $settings);
+    }
+  }
+  return array();
+}
+

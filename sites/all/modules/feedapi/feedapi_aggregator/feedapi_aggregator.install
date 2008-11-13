@@ -1,0 +1,113 @@
+<?php
+// $Id: feedapi_aggregator.install,v 1.1.2.9 2008/02/29 16:32:07 aronnovak Exp $
+
+/**
+ * Implementation of hook_install().
+ */
+function feedapi_aggregator_install() {
+  switch ($GLOBALS['db_type']) {
+    case 'mysql':
+    case 'mysqli':
+      db_query("CREATE TABLE {feedapi_aggregator_category} (
+        cid int NOT NULL auto_increment,
+        title varchar(255) NOT NULL default '',
+        description longtext NOT NULL,
+        block tinyint NOT NULL default '0',
+        PRIMARY KEY (cid),
+        UNIQUE KEY title (title)
+      ) /*!40100 DEFAULT CHARACTER SET UTF8 */ ");
+
+      db_query("CREATE TABLE {feedapi_aggregator_category_feed} (
+        feed_nid int NOT NULL default '0',
+        cid int NOT NULL default '0',
+        PRIMARY KEY (feed_nid,cid)
+      ) /*!40100 DEFAULT CHARACTER SET UTF8 */ ");
+
+      db_query("CREATE TABLE {feedapi_aggregator_category_item} (
+        iid int NOT NULL default '0',
+        cid int NOT NULL default '0',
+        PRIMARY KEY (iid,cid)
+      ) /*!40100 DEFAULT CHARACTER SET UTF8 */ ");
+
+      db_query("CREATE TABLE {feedapi_aggregator_item} (
+        iid int NOT NULL auto_increment,
+        feed_nid int NOT NULL default '0',
+        title varchar(255) NOT NULL default '',
+        link varchar(255) NOT NULL default '',
+        author varchar(255) NOT NULL default '',
+        description longtext NOT NULL,
+        timestamp int default NULL,
+        guid varchar(255),
+        PRIMARY KEY (iid),
+        KEY feed_nid (feed_nid)
+      ) /*!40100 DEFAULT CHARACTER SET UTF8 */ ");
+
+      break;
+    case 'pgsql':
+      db_query("CREATE TABLE {feedapi_aggregator_category} (
+        cid serial,
+        title varchar(255) NOT NULL default '',
+        description text NOT NULL,
+        block smallint NOT NULL default '0',
+        PRIMARY KEY (cid),
+        UNIQUE (title)
+      )");
+
+      db_query("CREATE TABLE {feedapi_aggregator_category_feed} (
+        feed_nid int NOT NULL default '0',
+        cid int NOT NULL default '0',
+        PRIMARY KEY (feed_nid,cid)
+      )");
+
+      db_query("CREATE TABLE {feedapi_aggregator_category_item} (
+        iid int NOT NULL default '0',
+        cid int NOT NULL default '0',
+        PRIMARY KEY (iid,cid)
+      )");
+
+      db_query("CREATE TABLE {feedapi_aggregator_item} (
+        iid serial,
+        feed_nid int NOT NULL default '0',
+        title varchar(255) NOT NULL default '',
+        link varchar(255) NOT NULL default '',
+        author varchar(255) NOT NULL default '',
+        description text NOT NULL,
+        timestamp int default NULL,
+        guid varchar(255),
+        PRIMARY KEY (iid)
+      )");
+      db_query("CREATE INDEX {feedapi_aggregator_item}_feed_nid_idx ON {feedapi_aggregator_item} (feed_nid)");
+      break;
+  }
+  // Create a default content type
+  $info->type = 'feedapi_aggregator';
+  $info->name = t('Feed (lightweight items)');
+  $info->description = t('Aggregates RSS or Atom feeds. Feed items will be turned into lightweight database entries.');
+  $info->module = 'node';
+  $info->has_title = TRUE;
+  $info->title_label = t('Title');
+  $info->has_body = TRUE;
+  $info->body_label = t('Body');
+  $info->min_word_count = 0;
+  $info->custom = TRUE;
+  node_type_save($info);
+  // Adding default FeedAPI settings
+  $preset = unserialize('a:3:{s:7:"enabled";s:1:"1";s:12:"items_delete";s:1:"0";s:10:"processors";a:2:{s:18:"feedapi_aggregator";a:3:{s:7:"enabled";s:1:"1";s:6:"weight";s:1:"0";s:5:"block";s:1:"3";}s:12:"feedapi_item";a:6:{s:6:"weight";s:1:"0";s:12:"content_type";s:5:"story";s:9:"node_date";s:4:"feed";s:7:"promote";s:1:"3";s:9:"list_feed";s:1:"3";s:4:"user";s:5:"admin";}}}');
+  if (is_array(variable_get('feedapi_settings_feedapi_aggregator', FALSE))) {
+    $preset = array_merge($preset, variable_get('feedapi_settings_feedapi_aggregator', FALSE));
+  }
+  variable_set('feedapi_settings_feedapi_aggregator', $preset);
+}
+
+/**
+ * Implementation of hook_uninstall().
+ */
+function feedapi_aggregator_uninstall() {
+  db_query('DROP TABLE {feedapi_aggregator_category}');
+  db_query('DROP TABLE {feedapi_aggregator_category_feed}');
+  db_query('DROP TABLE {feedapi_aggregator_category_item}');
+  db_query('DROP TABLE {feedapi_aggregator_item}');
+  node_type_delete('feedapi_aggregator');
+  variable_del('feedapi_settings_feedapi_aggregator');
+  menu_rebuild();
+}

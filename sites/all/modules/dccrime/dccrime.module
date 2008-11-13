@@ -1,0 +1,742 @@
+<?php
+define('DCCRIME_XML_FILENAME','./files/crime_incident_data.xml');
+define('DCCRIME_XML_LIFETIME',(24*60*60));
+
+define('DCCRIME_OFFENSE_VID',1);
+define('DCCRIME_METHOD_VID',2);
+define('DCCRIME_ANC_VID',3);
+define('DCCRIME_DISTRICT_VID',4);
+define('DCCRIME_BID_VID',5);
+
+function dccrime_form_alter($form_id, &$form)
+{
+    if($form_id=='user_edit')
+    {
+        $form['revalidate']['#weight'] = 10;
+        
+        $form['locations'][0]['#title'] = t('Your Location');
+        $form['locations'][0]['#collapsed'] = FALSE;
+        $form['locations'][0]['#description'] = t('In order for the site to work properly, we need you to use the map below to find your home address.  This information won\'t be available to anyone else on the site, but will be used to help generate RSS feeds and email alerts letting you know what\'s been happening in your neighborhood.');   
+    }
+}
+
+function dccrime_user($op, &$edit, &$account, $category = NULL)
+{
+    if($op=='form')
+    {
+        $form = array();
+        $form['dccrime'] = array(
+            '#type' => 'fieldset',
+            '#title' => t('Notification Preferences'),
+            '#description' => t('We want to keep you informed about what\'s going on in your neighborhood through whatever means is most convenient for you.  First, be sure to specify the radius, in miles, within which you want to be notified of incidents (you can use decimals if you\'d like). Second, if you\'d like to receive daily emails listing the latest incidents, check the box below.'),
+            '#weight' => -10,
+        );
+        $form['dccrime']['radius'] = array(
+            '#type' => 'textfield',
+            '#title' => 'Notification Radius',
+            '#description' => 'You probably only want to hear about incidents happening near your home. Specify how far you\'d like your notifications to extend (in miles). You may use decimals.',            
+            '#required' => TRUE,
+        );
+        
+        $form['dccrime']['email_notifications'] = array(
+            '#type' => 'checkbox',
+            '#title' => t('Receive Daily Emails'),
+            '#description' => t('Would you like to receive daily emails listing what incidents have occurred within the radius you specified?'),
+        );
+        
+        global $base_url;
+        $userinfo = _dccrime_userinfo($edit);
+        $rss_url = url($base_url . '/crime-feed/' . $edit['uid'] . '/' . $userinfo->hash);
+        $rss = <<<EOT
+            <div class="form-item">
+            <a href="{$rss_url}" class="rss-notification-link">Your Neighborhood RSS Feed</a>
+            <div class="description">Use this link with your RSS reader to get a daily notice of what's going on in your neighborhood.</div>
+            </div>
+EOT;
+        $form['dccrime']['rss'] = array(
+            '#type' => 'markup',
+            '#value' => $rss,
+        );
+           
+        return $form;
+    }
+    elseif($op=='insert')
+    {
+        _dccrime_userinfo($edit);
+        
+        $msg = <<<EOT
+        Thanks for registering! We need a little more information from you before the site can be made really useful, though.
+        Please fill out the fields below, particularly the 'Notification Preferences' and 'Location' sections. Once you do, you'll
+        be able to start receiving updates about crime in your neighborhood via RSS and email.
+EOT;
+        drupal_set_message($msg);
+    }
+    elseif($op=='update')
+    {
+        $extra_user_info = _dccrime_userinfo($edit);
+        $extra_user_info->radius = $edit['radius'];
+        $extra_user_info->email_notifications = (intval($edit['email_notifications'])==1);
+        variable_set('dccrime_userinfo_'.$edit['uid'],serialize($extra_user_info));            
+    }
+}
+
+function _dccrime_userinfo($edit)
+{
+    $user_info = variable_get('dccrime_userinfo_'.$edit['uid'],'');
+    if(!strlen($user_info))
+    {
+        $user_info = new stdClass();
+        $user_info->radius = 1.0;
+        $user_info->email = FALSE;
+        $user_info->hash = md5('saltotheearth'.$edit['mail'].$edit['uid'].time());
+        variable_set('dccrime_userinfo_'.$edit['uid'],serialize($user_info));
+    }    
+    else
+        $user_info = unserialize($user_info);
+    return $user_info;
+}
+
+function dccrime_menu($may_cache) {
+  $items = array();
+
+  if (!$may_cache) {
+    $items[] = array('path' => 'debug',
+        'title' => t('Debug'),
+        'callback' => 'dccrime_debug',
+        'access' => TRUE,
+        'type' => MENU_CALLBACK
+    );
+    
+    $items[] = array('path' => 'clear-crimes',
+        'title' => t('Clear all crimes'),
+        'callback' => 'dccrime_clear',
+        'access' => FALSE,
+        'type' => MENU_CALLBACK
+    );
+  
+  }
+  
+  return $items;
+}
+
+function dccrime_clear()
+{
+    $result = db_query("SELECT nid FROM {node} WHERE type='crime'");
+    while($row = db_fetch_object($result))
+        node_delete($row->nid);
+}
+
+function dccrime_debug()
+{
+    print_r(node_load(1081));
+}
+
+function _dccrime_xml2assoc($xml, $source_xml = '') 
+{
+    if(strlen($source_xml))
+    {
+        $xml = new XMLReader();
+        $xml->xml($source_xml);
+    }
+    
+    $assoc = null;
+    while($xml->read()){
+        switch ($xml->nodeType) 
+        {
+            case XMLReader::END_ELEMENT: return $assoc;
+            case XMLReader::ELEMENT:
+                $assoc[$xml->name][] = array('value' => $xml->isEmptyElement ? '' : _dccrime_xml2assoc($xml));
+                if($xml->hasAttributes)
+                {
+                    $el =& $assoc[$xml->name][count($assoc[$xml->name]) - 1];
+                    while($xml->moveToNextAttribute()) $el['attributes'][$xml->name] = $xml->value;
+                }
+                break;
+            case XMLReader::TEXT:
+            case XMLReader::CDATA: $assoc .= $xml->value;
+        }
+    }
+    
+    if(strlen($source_xml))
+    {
+        $xml->close();
+    }
+    
+    return $assoc;
+}
+
+function dccrime_cron()
+{
+    // get a new copy of the file if necessary
+    if(!file_exists(DCCRIME_XML_FILENAME) || ((time()-filemtime(DCCRIME_XML_FILENAME))>DCCRIME_XML_LIFETIME))
+    {
+        $temporary_filename = '/tmp/crime_incident_data-' . time() . '.xml';
+        $ch = curl_init('http://data.octo.dc.gov/feeds/crime_incidents/crime_incidents_current.xml');
+        $fp = fopen($temporary_filename, "w");
+
+        curl_setopt($ch, CURLOPT_FILE, $fp);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+
+        curl_exec($ch);
+        curl_close($ch);
+        fclose($fp);
+        
+        if(file_exists(DCCRIME_XML_FILENAME))
+            unlink(DCCRIME_XML_FILENAME);
+        
+        rename($temporary_filename, DCCRIME_XML_FILENAME);
+        
+        if(file_exists($temporary_filename))
+            unlink($temporary_filename);
+            
+        // you've done enough! get outta here until the next cron run...
+        return;
+    }
+    
+    $methods = array();
+    $offenses = array();
+    $districts = array();
+     
+    // now process the file
+    $xml = new XMLReader();
+    $xml->open(DCCRIME_XML_FILENAME);
+    while($xml->read())
+    {
+        if(($xml->nodeType==XMLReader::ELEMENT) && ($xml->name=='entry'))
+        {            
+            $incident = _dccrime_xml2assoc($xml);
+                       
+            _dccrime_store_crime_node($incident);            
+        }
+    }
+
+    $xml->close();   
+}
+
+function _dccrime_get_or_create_term($term,$vid)
+{
+    // don't bother with blank terms
+    if(!strlen($term))
+        return -1;
+        
+    $result = db_query("SELECT tid FROM {term_data} WHERE vid=%d AND name LIKE '%s'",$vid,$term);
+    if($row = db_fetch_object($result))
+    {
+       return $row->tid;
+    }
+    else
+    {
+        $form_values = array(
+           'vid' => $vid,
+           'name' => $term,
+           'description' => '',
+           'weight' => 0,
+        );
+        taxonomy_save_term($form_values);
+        return $form_values['tid'];
+    }
+}
+
+function _dccrime_store_crime_node($incident)
+{
+    // shortcut past RDF junk
+    $interesting_info = $incident['content'][0]['value']['dcst:ReportedCrime'][0]['value'];
+
+    // taxonomy data
+    $bid = $interesting_info['dcst:bid'][0]['value'];
+    $offense = $interesting_info['dcst:offense'][0]['value'];
+    $method = $interesting_info['dcst:method'][0]['value'];
+    $anc = $interesting_info['dcst:anc'][0]['value'];
+    $district = $interesting_info['dcst:district'][0]['value'];
+
+    $bid_tid = _dccrime_get_or_create_term($bid,DCCRIME_BID_VID);
+    $offense_tid = _dccrime_get_or_create_term($offense,DCCRIME_OFFENSE_VID);    
+    $method_tid = _dccrime_get_or_create_term($method,DCCRIME_METHOD_VID);        
+    $anc_tid = _dccrime_get_or_create_term($anc,DCCRIME_ANC_VID);
+    $district_tid = _dccrime_get_or_create_term($district,DCCRIME_DISTRICT_VID);
+
+    $taxonomy = array();
+    $crime_terms = array($bid_tid,$offense_tid,$method_tid,$anc_tid,$district_tid);
+    foreach($crime_terms as $tid)
+        if($tid>0)
+            $taxonomy[$tid] = taxonomy_get_term($tid);
+
+    // other pieces of data
+    $title = trim($incident['title'][0]['value']);
+    $narrative = $interesting_info['dcst:narrative'][0]['value'];
+    $address = $interesting_info['dcst:blocksiteaddress'][0]['value'];
+    $created = strtotime($interesting_info['dcst:reportdatetime'][0]['value']);
+    $latitude = $interesting_info['geo:lat'][0]['value'];
+    $longitude = $interesting_info['geo:long'][0]['value'];
+    if(preg_match('/(\d+)$/',$title,$matches))
+        $mpd_id = $matches[1];
+    else
+        $mpd_id = FALSE;
+        
+    $result = db_query("SELECT nid FROM {node} WHERE title='%s'",$title);
+    if($row = db_fetch_object($result))
+        $node = node_load($row->nid);
+    else
+        $node = new stdClass();
+        
+    $node->type = 'crime';
+    $node->uid = 1;
+    $node->status = 1;
+    $node->comment = 2;
+    $node->title = $title;
+    $node->created = $created;
+    $node->body = $narrative;
+    $node->locations = array(0 => array('latitude' => $latitude, 'longitude' => $longitude));
+    $node->location = $node->locations[0];
+    $node->taxonomy = $taxonomy;
+
+    $node->field_address = array(0 => array('value' => $address));
+    if($mpd_id) $node->field_mpd_id = array(0 => array('value' => $mpd_id));
+    
+    node_save($node);
+}
+
+
+/*
+    Array
+    (
+        [id] => Array
+            (
+                [0] => Array
+                    (
+                        [value] => http://data.octo.dc.gov/feeds/crime_incidents/atom/100008941?2008-11-07T08:40:03-05:00_1
+                    )
+
+            )
+
+        [title] => Array
+            (
+                [0] => Array
+                    (
+                        [value] => ReportedCrime ID:100008941
+                    )
+
+            )
+
+        [updated] => Array
+            (
+                [0] => Array
+                    (
+                        [value] => 2008-11-07T08:40:33-05:00
+                    )
+
+            )
+
+        [content] => Array
+            (
+                [0] => Array
+                    (
+                        [value] => Array
+                            (
+                                [dcst:ReportedCrime] => Array
+                                    (
+                                        [0] => Array
+                                            (
+                                                [value] => Array
+                                                    (
+                                                        [rdf:Description] => Array
+                                                            (
+                                                                [0] => Array
+                                                                    (
+                                                                        [value] => Array
+                                                                            (
+                                                                                [dc:date] => Array
+                                                                                    (
+                                                                                        [0] => Array
+                                                                                            (
+                                                                                                [value] => 2008-11-07T08:40:03-05:00
+                                                                                            )
+
+                                                                                    )
+
+                                                                                [rdf:type] => Array
+                                                                                    (
+                                                                                        [0] => Array
+                                                                                            (
+                                                                                                [value] => 
+                                                                                                [attributes] => Array
+                                                                                                    (
+                                                                                                        [rdf:resource] => http://dc.gov/dcstat/types/1.0/ReportedCrime
+                                                                                                    )
+
+                                                                                            )
+
+                                                                                    )
+
+                                                                                [dc:title] => Array
+                                                                                    (
+                                                                                        [0] => Array
+                                                                                            (
+                                                                                                [value] => dcst:ReportedCrime
+                                                                                            )
+
+                                                                                    )
+
+                                                                                [dc:subject] => Array
+                                                                                    (
+                                                                                        [0] => Array
+                                                                                            (
+                                                                                                [value] => ReportedCrime ID:100008941
+                                                                                            )
+
+                                                                                    )
+
+                                                                                [dc:description] => Array
+                                                                                    (
+                                                                                        [0] => Array
+                                                                                            (
+                                                                                                [value] => District of Columbia, Metropolitan Police Department (MPD) Reported Crime Incident List.
+                                                                                            )
+
+                                                                                    )
+
+                                                                                [dc:type] => Array
+                                                                                    (
+                                                                                        [0] => Array
+                                                                                            (
+                                                                                                [value] => http://dc.gov/dcstat/types/1.0/ReportedCrime
+                                                                                            )
+
+                                                                                    )
+
+                                                                                [dc:format] => Array
+                                                                                    (
+                                                                                        [0] => Array
+                                                                                            (
+                                                                                                [value] => text/xml
+                                                                                            )
+
+                                                                                    )
+
+                                                                                [dc:identifier] => Array
+                                                                                    (
+                                                                                        [0] => Array
+                                                                                            (
+                                                                                                [value] => http://dc.gov/dcstat/types/1.0/ReportedCrime#100008941
+                                                                                            )
+
+                                                                                    )
+
+                                                                                [dc:source] => Array
+                                                                                    (
+                                                                                        [0] => Array
+                                                                                            (
+                                                                                                [value] => http://dc.gov/dcstat/datasets/crime_incidents
+                                                                                            )
+
+                                                                                    )
+
+                                                                                [dc:language] => Array
+                                                                                    (
+                                                                                        [0] => Array
+                                                                                            (
+                                                                                                [value] => en
+                                                                                            )
+
+                                                                                    )
+
+                                                                                [dc:coverage] => Array
+                                                                                    (
+                                                                                        [0] => Array
+                                                                                            (
+                                                                                                [value] => District of Columbia
+                                                                                            )
+
+                                                                                    )
+
+                                                                                [dc:rights] => Array
+                                                                                    (
+                                                                                        [0] => Array
+                                                                                            (
+                                                                                                [value] => public domain
+                                                                                            )
+
+                                                                                    )
+
+                                                                                [dcterms:accessRights] => Array
+                                                                                    (
+                                                                                        [0] => Array
+                                                                                            (
+                                                                                                [value] => http://dc.gov/dcstat/accessrights/Public
+                                                                                            )
+
+                                                                                    )
+
+                                                                                [dcterms:accrualMethod] => Array
+                                                                                    (
+                                                                                        [0] => Array
+                                                                                            (
+                                                                                                [value] => EDW database
+                                                                                            )
+
+                                                                                    )
+
+                                                                                [dcterms:accrualPeriodicity] => Array
+                                                                                    (
+                                                                                        [0] => Array
+                                                                                            (
+                                                                                                [value] => 86400
+                                                                                            )
+
+                                                                                    )
+
+                                                                                [dcterms:modified] => Array
+                                                                                    (
+                                                                                        [0] => Array
+                                                                                            (
+                                                                                                [value] => 2008-11-07T07:37:11-05:00
+                                                                                            )
+
+                                                                                    )
+
+                                                                            )
+
+                                                                        [attributes] => Array
+                                                                            (
+                                                                                [rdf:about] => http://dc.gov/dcstat/types/1.0/ReportedCrime#100008941
+                                                                            )
+
+                                                                    )
+
+                                                            )
+
+                                                        [dcst:nid] => Array
+                                                            (
+                                                                [0] => Array
+                                                                    (
+                                                                        [value] => 100008941
+                                                                    )
+
+                                                            )
+
+                                                        [dcst:ccn] => Array
+                                                            (
+                                                                [0] => Array
+                                                                    (
+                                                                        [value] => 08158534
+                                                                    )
+
+                                                            )
+
+                                                        [dcst:reportdatetime] => Array
+                                                            (
+                                                                [0] => Array
+                                                                    (
+                                                                        [value] => 2008-11-06T00:00:00-05:00
+                                                                    )
+
+                                                            )
+
+                                                        [dcst:shift] => Array
+                                                            (
+                                                                [0] => Array
+                                                                    (
+                                                                        [value] => EVN
+                                                                    )
+
+                                                            )
+
+                                                        [dcst:offense] => Array
+                                                            (
+                                                                [0] => Array
+                                                                    (
+                                                                        [value] => HOMICIDE
+                                                                    )
+
+                                                            )
+
+                                                        [dcst:method] => Array
+                                                            (
+                                                                [0] => Array
+                                                                    (
+                                                                        [value] => UNKNOWN
+                                                                    )
+
+                                                            )
+
+                                                        [dcst:lastmodifieddate] => Array
+                                                            (
+                                                                [0] => Array
+                                                                    (
+                                                                        [value] => 2008-11-07T07:37:11-05:00
+                                                                    )
+
+                                                            )
+
+                                                        [dcst:blocksiteaddress] => Array
+                                                            (
+                                                                [0] => Array
+                                                                    (
+                                                                        [value] => 11TH ST NW & OTIS PL NW
+                                                                    )
+
+                                                            )
+
+                                                        [dcst:narrative] => Array
+                                                            (
+                                                                [0] => Array
+                                                                    (
+                                                                        [value] => NO NARRATIVE IS AVAILABLE.
+                                                                    )
+
+                                                            )
+
+                                                        [geo:lat] => Array
+                                                            (
+                                                                [0] => Array
+                                                                    (
+                                                                        [value] => 38.93456946630470
+                                                                    )
+
+                                                            )
+
+                                                        [geo:long] => Array
+                                                            (
+                                                                [0] => Array
+                                                                    (
+                                                                        [value] => -77.02849640078720
+                                                                    )
+
+                                                            )
+
+                                                        [dcst:city] => Array
+                                                            (
+                                                                [0] => Array
+                                                                    (
+                                                                        [value] => 
+                                                                    )
+
+                                                            )
+
+                                                        [dcst:state] => Array
+                                                            (
+                                                                [0] => Array
+                                                                    (
+                                                                        [value] => 
+                                                                    )
+
+                                                            )
+
+                                                        [dcst:ward] => Array
+                                                            (
+                                                                [0] => Array
+                                                                    (
+                                                                        [value] => 1
+                                                                    )
+
+                                                            )
+
+                                                        [dcst:anc] => Array
+                                                            (
+                                                                [0] => Array
+                                                                    (
+                                                                        [value] => 1A
+                                                                    )
+
+                                                            )
+
+                                                        [dcst:smd] => Array
+                                                            (
+                                                                [0] => Array
+                                                                    (
+                                                                        [value] => 1A07
+                                                                    )
+
+                                                            )
+
+                                                        [dcst:district] => Array
+                                                            (
+                                                                [0] => Array
+                                                                    (
+                                                                        [value] => THIRD
+                                                                    )
+
+                                                            )
+
+                                                        [dcst:psa] => Array
+                                                            (
+                                                                [0] => Array
+                                                                    (
+                                                                        [value] => 302
+                                                                    )
+
+                                                            )
+
+                                                        [dcst:neighborhoodcluster] => Array
+                                                            (
+                                                                [0] => Array
+                                                                    (
+                                                                        [value] => 2
+                                                                    )
+
+                                                            )
+
+                                                        [dcst:hotspot2006name] => Array
+                                                            (
+                                                                [0] => Array
+                                                                    (
+                                                                        [value] => NONE
+                                                                    )
+
+                                                            )
+
+                                                        [dcst:hotspot2005name] => Array
+                                                            (
+                                                                [0] => Array
+                                                                    (
+                                                                        [value] => NONE
+                                                                    )
+
+                                                            )
+
+                                                        [dcst:hotspot2004name] => Array
+                                                            (
+                                                                [0] => Array
+                                                                    (
+                                                                        [value] => NONE
+                                                                    )
+
+                                                            )
+
+                                                        [dcst:businessimprovementdistrict] => Array
+                                                            (
+                                                                [0] => Array
+                                                                    (
+                                                                        [value] => NONE
+                                                                    )
+
+                                                            )
+
+                                                        [georss:point] => Array
+                                                            (
+                                                                [0] => Array
+                                                                    (
+                                                                        [value] => 38.93456946630470 -77.02849640078720
+                                                                    )
+
+                                                            )
+
+                                                    )
+
+                                            )
+
+                                    )
+
+                            )
+
+                        [attributes] => Array
+                            (
+                                [type] => text/xml
+                            )
+
+                    )
+
+            )
+
+    )
+*/

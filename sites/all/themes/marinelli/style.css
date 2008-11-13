@@ -1,0 +1,1344 @@
+/*- Marinelli styles v2.1 - Drupal5x - 18/06/08
+author:singalkuppe: leoni.matteo[at]gmail.com - www.signalkuppe.com
+ */
+
+* {padding: 0;margin: 0;}
+
+img {border: 0;}
+
+body {
+	font-family: "Lucida Grande","Lucida Sans Unicode", helvetica, verdana, arial, sans-serif;
+	line-height:1.125em;/*18px*/
+	font-size:100%;/*set regular font size*/
+	color: #333;
+	letter-spacing:normal;
+	background: #EDEDED url(img/body.gif);
+	text-align: center;
+	margin: 40px 0 20px 0;
+	}
+
+
+#page {
+	background: white;
+	text-align: left;
+	margin: 0px auto;
+	position: relative;
+	/* The entire template's width is set in this class. */
+	width: 970px;
+	border:12px solid #054b81;
+	}
+
+* html #page { width: 970px; } /* IE hack */
+
+body.flex #page { /* For the flexible-width setting. */
+	width: 98%;
+	/*width: 80%;
+	min-width: 970px !important;
+	max-width: 1000px; */
+	}
+
+#utilities {
+	padding: 0;	
+	margin: 0px auto;
+	width:970px;
+	height:25px;
+	position:relative;
+	}
+
+
+#header {
+padding: 0;
+margin: 0;
+height: 180px;
+background: #000033 url(img/banners/rotate.php) no-repeat 0px 0px;
+position:relative;
+	}
+	
+	
+#submenu { /*secondary links*/
+background: #FF9900 url(img/slinks.gif) repeat-x top;
+font-size:0.875em;
+color:#fff;
+text-align:left;
+letter-spacing: 1px;
+padding:6px 0px 6px 14px;
+	}
+	
+
+#submenu ul li a {
+color:white;
+	}
+#submenu ul li a.active{
+font-weight:bold;
+	}
+
+
+/*path*/
+.path{padding-bottom:3px;}
+.path  p span {
+font: bold 0.75em Georgia, "Times New Roman", Times, serif;
+text-transform:uppercase;
+padding:5px;
+background:#e1e0e0;
+margin-right:10px;
+	}
+
+.path  p {
+letter-spacing:0px;
+	}	
+
+#primary {
+	float: left;
+	margin: 0 5px 0 8px !important;
+	margin: 0 5px 0 4px;
+	padding-left:7px;
+	/*larghezza settata nel file template.php -  width set in template.php*/
+	}
+
+
+#primary .singlepage {
+	text-align: left;
+	margin: 18px 0 0 0;
+	padding:0 0 15px 4px;
+	background-color:#FFFFFF;
+	
+	}
+
+#primary .singlepage p { /*set typography*/
+	font-size:0.8125em; /*13px*/
+	margin:10px 0 10px 0;
+	}
+
+
+/*- Main styles */
+
+h1, h2, h3, h4, h5, h6 {	
+	margin: 10px 0;
+	}
+h1, h1 a{text-decoration: none;}
+
+
+h3, h4 {
+	font-size: 1.2em;
+	font-weight: normal;
+
+	}
+
+h2, h2 a, h2 a:visited,
+h3, h3 a, h3 a:visited,
+h4, h4 a, h4 a:visited {
+	color: #333;
+	}
+
+h2, h2 a, h2 a:hover, h2 a:visited,
+h3, h3 a, h3 a:hover, h3 a:visited,
+h4, h4 a, h4 a:hover, h4 a:visited {
+	text-decoration: none;
+	}
+
+
+#page #primary .drdot{ /* sistema il float */
+   clear:both;
+	}
+
+#page #primary .tabs{ /* tabs */
+   font-size:0.875em;
+   margin:20px 0 20px 0;
+	}
+
+
+#page #primary .tabs ul li{ /* tabs */
+   background:none;
+   margin:0;
+   padding:0 0 0 0px;
+	}
+
+
+#primary .tabs .secondary li a{  /* tabs secondary */
+   margin: 12px 12px 12px 0px;
+	}
+
+/*- Header styles */
+
+#header h1, #header p.sitetitle { /* site title */
+	font-family:Georgia, "Times New Roman", Times, serif;
+	color:white;
+	font-size: 3.0em; /*48px*/
+	font-weight: lighter;
+	letter-spacing: -1px;
+	margin: 0px;
+	padding: 30px 0 12px 35px;
+	text-transform: none;
+	}
+	
+#header p.slogan{
+    font-family:Georgia, "Times New Roman", Times, serif;
+	font-size: 1.2em;
+	line-height:1em;
+	font-weight: lighter;
+	letter-spacing: -0.3px;
+	padding: 4px 0 10px 45px;
+	display: block;
+	color: #fff;
+	}
+
+#header h1 a, #header p a{color: #fff;}
+#header h1 a:hover, #header p.sitetitle a:hover{text-decoration:underline;}
+	
+	
+#header h1, #header h2{font-family:Georgia, "Times New Roman", Times, serif;}
+
+h1 a, h2 a {
+font-family:Georgia, "Times New Roman", Times, serif;
+color: #333;}
+
+h1 a:visited{color: #fff;}
+
+
+#header p.description {
+	font-family: Arial,sans-serif;
+	font-size: 1em;
+	font-weight: normal;
+	color: #fff;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	margin: 5px 0 0 37px;
+	}
+#header p.description img {
+	margin: 0 8px 0 0;
+	vertical-align: -2px;
+}
+
+/*search box*/	
+
+#utilities form {
+position:absolute;
+right:0;
+bottom:2px;
+	}
+	
+	
+#utilities label{color:white;display:none;}	
+	
+#utilities input  {
+margin-top:10px;
+margin-bottom:5px;
+float:left;
+	}
+	
+#utilities input.form-submit{
+border: #FFFFFF 1px solid; 
+font-size: 0.75em; 
+background: #2B2B2B/*3B3B3B*/; 
+margin: 10px 4px 0px 4px; 
+color: #ffffff; 
+padding: 1px;
+}	
+	
+
+#utilities input.form-text  {
+font-size:0.75em;
+background: #7988b7;
+border:1px solid #ade1fa;
+color:white;
+padding:2px;
+	}
+
+
+
+
+
+/*- Primary links in Header */
+
+#utilities #plinks {
+font-size:90%;
+position:absolute;
+left:0px;
+bottom:0px!important;
+bottom:-1px;
+		}
+
+#utilities #plinks ul li {
+	display: inline;
+	float:left;
+	margin-right: -2px;
+	}
+
+#utilities #plinks ul li a {
+	color: white;
+	background: #156aa3;
+	text-transform:capitalize;
+	padding:5px 10px 5px 10px;
+	display:block;
+	}
+
+#utilities #plinks ul li a:hover {
+	background: #054b81;
+	color: #fff;
+	text-decoration: none;
+	}
+
+#utilities #plinks ul li a.active,
+#utilities #plinks ul li a.active:hover {
+	color: #fff !important;
+	background: #054b81;
+	text-decoration: none;
+	font-weight:bold;
+	}
+
+.admintab {
+	/*_padding: 5px 15px 6px;*/ /* IE hack */
+	}
+
+* html .admintab { padding: 5px 15px 6px }	/* IE hack */
+
+/*- Sidebar Subpages Menu */
+
+
+.lsidebar , .rsidebar{
+   margin-top:10px;
+	}
+
+.lsidebar {
+	width: 180px;
+	float: left;
+	margin-left:20px!important;
+	margin-left:15px;
+	}
+.rsidebar {
+	width: 180px;
+	float: left;
+	margin-left:15px!important;
+	margin-left:18px;
+	}	
+
+#sitemission{ /*site mission*/
+background: url(img/bgblock.gif) repeat-x 0 2px;
+margin:15px 0 15px 0;
+padding:15px;
+}
+
+#primary #sitemission p{font-family:Georgia, "Times New Roman", Times, serif;
+font-size:1.3em;
+font-style:italic;
+line-height:120%;
+text-align:center;
+color:#666;}
+	
+/*block styles*/
+
+.defaultblock{
+background: url(img/bgblock.gif) repeat-x top;
+margin:0px 0 20px 0;
+	}
+	
+.defaultblock .blockcontent{
+font-size:0.8125em;/*13px*/
+margin:0px 0 20px 0;
+	}
+	
+	
+.loginblock{
+font-size:0.8125em;/*13px*/
+background: #dbdbdb;
+margin:10px 0 20px 0;
+padding:0px 0 5px 0;
+	}
+	
+form#user-login-form{text-align:left;line-height:0.9em;}
+form#user-login-form label{margin-bottom:3px;}
+.loginblock ul li{margin:0;padding:0;background:none;}
+	
+.defaultblock .blockcontent, .loginblock .blockcontent{
+padding:0 10px 0 10px;
+	}
+
+.defaultblock h2{
+color:#333;
+padding:8px 4px 4px 12px;
+font: 0.875em Georgia, "Times New Roman", Times, serif; /*14px*/
+text-transform:uppercase;
+	}
+	
+.loginblock h2{
+color:white;
+background:#054b81 url(img/login.gif) no-repeat 155px 4px;
+padding:4px;
+margin:0px 0 10px 0;
+font: 1em Georgia, "Times New Roman", Times, serif; /*14px*/
+text-transform:uppercase;
+	}
+
+.rsidebar .loginblock ul li{background:none;}
+
+.defaultblock h3{
+color:#333;
+font: 95% Georgia, "Times New Roman", Times, serif; /*13px*/
+text-transform:uppercase;
+	}
+
+
+/*- Primary Contents */
+
+#primary .item {
+	margin: 0 0 15px 0;
+	padding: 0;
+	/*position: relative;*/
+	}
+
+	
+#primary .title h2{
+	font: bold .9em/1em Helvetica, Arial, Geneva, sans-serif;
+	color: #005a8c;
+	text-transform: uppercase;
+	}
+	
+#primary .item .itemhead {margin: 0 0 5px 0; padding: 0;}
+	
+#primary .item .itemhead h3 {
+	font-size: 1.7em;
+	display: block;
+	margin: 0 0 0 0 !important;
+	margin: 0 0 0 10px;
+	padding: 0;
+	}
+		
+#primary .item .itemtext {
+	font: 1.1em/1.5em 'Lucida Grande', Verdana, Arial, Sans-Serif;
+	text-align: justify;
+	color: #444;
+	margin: 0;
+	padding: 0;
+	}
+
+#primary .item .itemtext p,
+#primary .item .itemtext ul,
+#primary .item .itemtext ol,
+#primary .item .itemtext div,
+#primary .item .itemtext blockquote {
+	margin: 0 0 0 0 !important;
+	margin: 0 0 0 10px;
+	}
+
+
+	
+#primary .item .itemhead p.metadata {
+	font-size: .85em;
+	text-transform: uppercase;
+	display: block;
+	margin: 2px 0 0 0 !important;
+	margin: 2px 0 0 10px;
+	color: #666;
+	}
+
+/*content headings */
+
+#primary .singlepage h1,#primary .singlepage h2, #primary .singlepage h3, #primary .singlepage h4, #primary .singlepage h5, #primary .singlepage h6{ 
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-weight:normal;
+	color: #333;
+	letter-spacing: -1.2px;
+	text-align: left;
+	text-transform: none;
+	margin:10px 0 10px 0;
+	padding:0;
+}
+
+#primary .node .content h1 a,#primary .node .content h2 a, #primary .node .content h3 a, #primary .node .content h4 a, #primary .node .content h5 a, #primary .node .content h6 a{ 
+	font-family:Georgia, "Times New Roman", Times, serif;
+	font-weight:normal;
+	color: #333;
+	letter-spacing: -1.2px;
+	text-align: left;
+	text-transform: none;
+	margin:10px 0 15px 0;
+	padding:0;
+}
+
+
+#primary .singlepage h2.nodeTitle a { /*links in teasers are smaller!*/
+	font:0.9em Georgia, "Times New Roman", Times, serif; /*14px*/
+}
+
+
+#primary .singlepage h1{font-size:1.75em; line-height:1.15em;margin-bottom:12px;}
+#primary .singlepage h2.with-tabs{margin-bottom:30px;}
+
+
+#primary .singlepage h2{font-size:1.5em;}
+#primary .singlepage h3{font-size:1.4em;}
+#primary .singlepage h4{font-size:1.3em;}
+#primary .singlepage h5{font-size:1.2em;}
+#primary .singlepage h6{font-size:1.1em;}
+
+#primary .singlepage h2 a, #primary .singlepage h3 a, #primary .singlepage h4 a, #primary .singlepage h5 a, #primary .singlepage h6 a{font-size:1em;}
+
+
+
+
+
+#primary .singlepage p.small { 
+	font: 1em/1.5em 'Lucida Grande', Verdana, Arial, Sans-Serif;
+	margin-top: 10px;
+	padding-top: 5px;
+}
+
+#primary img { 
+	margin: 0 15px 0px 0;
+	padding: 4px;
+	float: left;
+}
+
+#primary .singlepage img.destra { 
+	margin: 0 0px 0px 15px;
+	padding: 4px;
+	border: 1px solid #ccc;
+	float: right;
+}
+
+#primary .singlepage img.altobasso { 
+	margin:0px;
+	display:block;
+	padding: 0px;
+	border: 0px solid #ccc;
+	float:none;
+}
+
+#footer {
+	width: 970px;
+	margin: 0 auto;
+	padding:15px 0;
+    text-align: center;
+	color:#FFFFFF;
+	background:none;
+	font-size:0.75em;
+	font-weight:bold;
+	}
+
+#footer img{border:none;}
+#footer a:hover{text-decoration: underline;}
+
+
+/*- Links */
+
+#primary a:hover, #primary a:visited:hover,
+.secondary a:hover, .secondary a:visited:hover {
+	text-decoration: underline;
+	}
+
+/*h2 a:hover, h2 span a:hover {
+	color: #27d !important;
+	}
+*/
+
+a {	color: #005a8c;
+text-decoration:none;
+	}
+	
+
+#primary .node .content a{
+text-decoration:none; font-weight:bold;
+	}
+#primary .node .content a:hover, .defaultblock a:hover{
+text-decoration:underline;
+	}
+/*.itemtext a:visited {
+	color: #b41;
+	}*/
+
+/*- Various Tags and Classes */
+
+.clear {
+	clear: both;
+	margin: 0;
+	padding: 0;
+	}
+
+hr {
+	display: none;
+	}
+
+/*- Begin Lists */
+.itemtext ol, .itemtext ul {
+	padding: 0 0 0 35px;
+	margin: 0;
+	}
+
+.itemtext ol li, .itemtext ul li {
+	margin: 0 0 3px;
+	padding: 0;
+	}
+
+.secondary div p {
+	margin-top: 0.5em;
+	}
+
+/*.secondary ul, .secondary ol {
+	margin: 5px 0 0;
+	padding-left: 0;
+	}*/
+
+.secondary ul, .secondary ol, .secondary div {
+	margin: 5px 0 0;
+	padding-left: 0;
+	}
+
+
+/*---------------tabelle---------------*/
+
+.view table /*view table in fe*/
+{
+font-size:105%;
+}
+
+.view table tr td
+{
+padding:4px;
+}
+
+
+
+table
+{
+	margin:1em 0;
+	width:98%;
+	font-size:0.8125em;
+}
+
+table tr td
+{
+padding:3px;
+}
+
+#system-themes table img.screenshot /* fix for themes page */
+{
+	width:100px;
+}
+
+thead th
+{
+	border-bottom:2px solid #ccc;
+	margin-bottom:4px;
+	padding-bottom:4px;
+	color:#494949;
+	font-weight:bold;
+	text-align:left;
+}
+
+
+
+
+tr.even
+{
+	background-color:#d1dee6;
+}
+
+tr.odd
+{
+	background-color:#ededed;
+}
+
+td.region,td.module,td.container
+{
+	background-color:#CDD6DE;
+	border-bottom:1px solid #AAAAAA;
+	border-top:1.5em solid #fff;
+	color:#455067;
+	font-weight:bold;
+}
+
+tr:first-child td.region,tr:first-child td.module,tr:first-child td.container
+{
+	border-top-width:0;
+}
+
+td.menu-disabled,td.menu-disabled a
+{
+	background-color:#D5C2C2;
+	color:#000;
+}
+
+.sticky-table {clear:left;padding:0px;overflow:hidden;font-size:70%;} /*fix report tab*/
+
+
+/*----------list styles----------*/
+
+
+
+.tabs ul li 
+{
+	background:none;
+	padding:0;
+	margin:0;
+	list-style:none;
+
+}
+
+
+#primary ul
+{
+ margin:10px 0 10px 0;
+}
+
+/*lists in content*/
+
+.item-list ul li
+{
+	margin:0 0 1px 0px;
+	background:url('img/leaf.gif') no-repeat 0px 2px;
+	list-style:none;
+	padding: 0px 0 0px 22px;
+}
+
+
+#primary .singlepage .node .content li{ /*lists in node content*/
+font-size:0.875em;
+list-style:square;
+margin:3px 0 3px 18px;
+}
+
+.content ol 
+{
+margin:10px 0 10px 0;
+}
+
+.content ol li
+{
+	padding:0px;
+	margin:0 0 0 22px;
+}
+
+
+.rsidebar ul.menu li, .rsidebar .item-list ul li, .rsidebar li.leaf , .lsidebar ul.menu li, .lsidebar .item-list ul li, .lsidebar li.leaf 
+{
+	padding: .15em 0 .15em 1.5em;
+	list-style-type: none;
+	list-style-image: none;
+	background: transparent url('img/leaf.gif') no-repeat 2px .4em;
+}
+
+
+
+
+
+
+ol li 
+{
+	padding: 0 0 .3em;
+	margin-left: 2em;
+}
+
+
+.rsidebar ul li.expanded, .lsidebar ul li.expanded 
+{
+	background: transparent url('img/expanded.gif') no-repeat 2px .4em;
+}
+
+.rsidebar ul li.collapsed, .lsidebar ul li.collapsed 
+{
+	background: transparent url('img/collapsed.gif') no-repeat 2px .4em;
+}
+
+
+
+
+ul.inline li 
+{
+	background: none;
+	margin: 0;
+	padding: 0 1em 0 0;
+}
+
+/*----------other styles----------*/
+hr 
+{
+	margin: 0;
+	padding: 0;
+	border: none;
+	height: 1px;
+	background: #5294c1;
+}
+
+dl 
+{
+	margin: 0;
+	font-size:0.8em
+
+}
+
+
+
+dl dd 
+{
+	margin: 0.5em 0 .5em 1.5em;
+}
+
+dl dt
+{
+	background:url(img/square.gif) no-repeat 0 5px;
+	padding:0 0 0 20px;
+	margin:0;
+}
+
+
+span.form-required 
+{
+	color: #ffae00;
+}
+
+.body a
+{
+	margin-bottom: 0.75em;
+	padding:2px;
+	display:block;
+}
+
+.messages ul 
+{
+	margin: 0;
+}
+
+.form-checkboxes, .form-radios, .form-checkboxes .form-item, .form-radios .form-item 
+{
+	margin: 0.25em 0;
+	
+}
+
+.form-item ul li
+{
+
+	list-style: none;
+}
+
+.fieldset ul li
+{
+
+	list-style: none;
+}
+
+
+
+
+.form-button, .form-submit 
+{
+	margin: 0.5em 0.5em 1em 0;
+}
+
+#watchdog-form-overview .form-submit,
+.confirmation .form-submit,
+.search-form .form-submit,
+.poll .form-submit,
+fieldset .form-button, fieldset .form-submit,
+.sidebar .form-button, .sidebar .form-submit,
+table .form-button, table .form-submit
+{
+  margin: 0;
+}
+
+
+fieldset ul.clear-block li
+{
+  margin: 0;
+  padding: 0;
+  background-image: none;
+}
+
+.box 
+{
+	margin-bottom: 2.5em;
+}
+
+.div
+{
+	margin:0;
+	padding:0;
+}
+
+#primary .content blockquote
+{
+    background-color:#eeeeee;
+	border:1px solid #ccc;
+	font-style:italic;
+	margin:15px;
+	padding:12px;
+	color:#666;
+}
+
+em
+{
+
+	font-style:italic;
+
+}
+
+/*admin panel styles*/
+
+
+#primary .singlepage form{
+  font-size:0.8em;
+}
+
+div.admin-panel {
+  margin: 0;
+  padding: 5px 0px 15px 5px;
+  background:url(img/gradient.gif) repeat-x;
+}
+
+div.admin-panel .description {
+  margin: 0 0 3px;
+  padding: 2px 0 3px 0;
+}
+
+div.admin-panel .body {
+  padding: 0 0px 2px 0px;
+}
+
+div.admin {
+  padding-top: 15px;
+}
+
+div.admin .left {
+  float: left;
+  width: 45%;
+  margin-left: 1em;
+}
+
+div.admin .right {
+  float: right;
+  width: 45%;
+  margin-right: 1.1em;
+}
+
+/*admin by module*/
+div.bymodule ul li{font-size:80%; margin:0 0 0px 0; padding:0px 0 0 18px;}
+	
+#primary .messages{
+   font-size:0.875em;
+   padding:10px;
+}
+#primary .messages ul li{
+     list-style:none;
+}
+
+#primary .messages .status{
+     padding:10px;
+	 background-color:#d8fab6;
+	 border:1px solid #3d7903;
+	}
+
+#primary .help .help{
+     padding:5px;
+	 margin:15px 0 15px 0;
+	 background-color:#FFFFCC;
+	 border:1px solid #FFCC00;
+	}
+	
+	
+#primary .help .help a, #primary .help .help a:hover{
+     font-weight:bold;
+	 color: #990000;
+	}	
+	
+	
+#primary .help .help ul li{
+     padding-left:15px;
+	 background: url(img/lista.gif) no-repeat 0 7px;
+	 list-style:none;
+
+	}
+	
+	
+#primary .admin-dependencies, #primary .admin-required {
+	 color:#999999;
+	 font-size:100%;
+	 font-style:italic;
+	 font-family:Arial, Helvetica, sans-serif;
+	}	
+
+#primary code{
+	 color:#000;
+	 font-weight:bold;
+	 font-family:Arial, Helvetica, sans-serif;
+	}	
+
+/*comments & links*/
+#comments{
+margin-top: 2em;
+font-size:0.875em;
+}
+
+#comments .box h2{
+font-size:1.3em;
+}
+
+
+.commentTitle{
+font-size:1.4em;
+font-family:Georgia, "Times New Roman", Times, serif;
+margin-bottom:5px;
+}
+
+#comments .content{
+margin-bottom:5px;
+font-size:1.1em;
+}
+.submitted{
+margin-bottom:10px;
+font-style:italic;
+font-size:0.75em;
+}
+
+.comment{
+background-color:#ededed;
+border:1px solid #ccc;
+margin:0 0 2em;
+padding:1em;
+
+}
+
+.links{
+font-size:0.875em;/*14px*/
+margin-top:1em;
+clear:both;
+}
+
+.linksteaser{
+padding-bottom:10px;
+border-bottom: 1px dashed #ccc;
+margin-bottom: 5px;
+}
+
+.linksteaser ul li{
+margin-right: 5px;
+}
+
+.comment .links ul li{
+list-style:none;
+background:none;
+padding-left: 23px;
+padding-top:1px;
+padding-bottom:1px;
+}
+
+
+.comment .links li.comment_delete{
+background:url(img/commentdelete.gif) no-repeat;
+}
+
+.comment .links li.comment_edit{
+background:url(img/commentedit.gif) no-repeat;
+}
+
+.comment .links li.comment_reply{
+background:url(img/commentadd.gif) no-repeat;
+}
+
+#primary .links li.comment_forbidden{
+background:url(img/lock.gif) no-repeat;
+padding-left:22px;
+}
+
+#primary .links li.comment_comments{
+background:url(img/comments.gif) no-repeat;
+padding-left:22px;
+}
+
+#primary .links li.blog_usernames_blog first{
+background:url(img/blog.gif) no-repeat;
+padding-left:22px;
+}
+
+.links li.comment_add{
+background:url(img/comment_add.gif) no-repeat;
+padding:0px 0 0 23px;
+}
+
+
+.links li.node_read_more{
+background:url(img/readmore.gif) no-repeat;
+padding:1px 0 0 23px;
+}
+
+
+/*taxonomy terms in node*/
+
+.taxonomy{
+font-size:0.875em;
+margin:15px 0 25px 0;
+border-top:4px solid #eee;
+padding-top:10px;
+clear:left;
+
+}
+
+.taxonomyteaser{
+margin:10px 0 15px 0;
+border-bottom:1px dashed #ccc;
+padding-bottom:10px;
+clear:left;
+font-size:0.875em;
+}
+
+.taxonomy span{
+font-weight:bold;
+background:url(img/tags.gif) no-repeat;
+padding-left:21px;
+padding-right:10px;
+}
+
+p span.tagsteaser{
+background:url(img/tags.gif) no-repeat;
+padding-left:23px;
+font-weight:bold;
+color:#24365c;
+}
+
+
+/*meta in nodes*/
+
+.metanode{
+
+font:0.875em Georgia, "Times New Roman", Times, serif;
+font-style:italic;
+margin:10px 0 20px 0;
+}
+
+.metanode p{
+
+}
+.metanode span{
+font-weight:bold;
+padding-bottom:5px;
+}
+
+.metanode span.author{
+background:url(img/user.gif) no-repeat;
+padding-left:21px;
+}
+
+.metanode span.date{
+background:url(img/clock.gif) no-repeat 2px 0;
+padding-left:21px;
+}
+
+/*pager*/
+.item-list ul.pager{
+text-align:left;
+margin:0px;
+padding-top:10px;
+font-size:0.75em;
+}
+
+.item-list .pager li{
+margin:0px;
+padding:3px;
+}
+
+.item-list .pager li.pager-current{
+padding:4px;
+background-color:#ededed;
+border:1px solid #ccc;
+color:#333;
+}
+
+
+
+
+/*avatar*/
+
+.picture{
+float:right;
+margin:8px 0 4px 8px;
+}
+
+.picture img{
+float:right;
+margin:0 0 4px 5px;
+padding:4px;
+border:1px solid #e1e0e0;
+background:white;
+}
+
+.picture a:hover img{
+background:url(img/bgavatar.gif) no-repeat bottom;
+}
+
+
+/*forums*/
+
+#primary .singlepage #forum ul.links li.forum{
+font-size:0.8em;
+padding-left:22px;
+background:url(img/post.gif) no-repeat 0px -1px;
+}
+
+.singlepage #forum table tr.even{
+background-color:#ededed;
+}
+
+.singlepage #forum table tr td.container{
+background-color: #FFF;
+}
+
+
+.singlepage #forum{
+font-size:0.85em;
+}
+
+.singlepage #forum .name{
+font-size:1.2em;
+margin-bottom:8px;
+}
+
+#forum .links
+{
+margin:0px;
+display:inline;
+}
+
+#forum .links a
+{
+font-size:1.3em;
+}
+
+/*sticky icon*/
+#primary img.sticky{float:none;margin:0px 0 0 8px;padding:0px;}
+/*profile*/
+.profile{font-size:0.9em;}
+.profile dl{font-size:0.85em;}
+.profile dl dt{font-size:1.2em;}
+.profile dl dd{font-size:1.3em;}
+.profile dd{font-size:1em;}
+.profile h3{font-size:1.4em;border-bottom:none;margin-bottom:20px;}
+
+/*book & forum navigation*/
+
+.book-navigation, .forum-topic-navigation{
+font-size:0.75em;
+background:#eee;
+margin-top:10px;
+}
+
+.book-navigation a, .forum-topic-navigation a{
+font-weight:normal;
+}
+
+/*attachments */
+
+#page table#attachments tr td{padding:4px;}
+#page table#attachments tr td a{font-weight:normal;}
+
+/*pools*/
+#page .poll{clear:both; margin-top:3px;}
+.poll .title{font-weight:bold;margin:8px 0 8px 0;}
+.poll .percent, .pool .text{margin:1px 0 1px 0;}
+#page .poll .bar .foreground{background-color:#156aa3;}
+#page .poll .vote-form{text-align:left;}
+#page .poll .form-item{margin:8px 0 8px 0;}
+#page .poll .choices{margin:0px;}
+#page .poll .total{text-align:left;}
+
+/*book links */
+
+.links .book_printer{
+background:url(img/print.gif) no-repeat;
+padding-left:20px;
+}
+
+.links .book_add_child{
+background:url(img/add.gif) no-repeat;
+padding-left:20px;
+}
+
+#primary .content .book-navigation .menu li{
+background:url(img/figlio.gif) no-repeat 0 2px;
+list-style:none;
+list-style-image:none;
+list-style-type:none;
+padding-left:20px;
+margin:4px 0 4px 0;
+}
+
+/*search results*/
+
+#primary .singlepage .search-results dt{font-size:110%; background:url(img/result.gif) no-repeat;margin-top:10px;}
+#primary .singlepage .search-results p{font-size:100%;}
+#primary .singlepage .search-results p strong{ background: #FFFF99}
+#primary .singlepage .search-results p.search-info{font-style:italic;}
+
+/*hidden div used to hide hidden form elements (such as paypal form)*/
+
+.hide{visibility:hidden;height:5px;}
+
+
+/**
+ * Collapsible fieldsets
+ */
+fieldset {
+  margin: 1em 0;
+  padding: 1em;
+  border: 1px solid #ccc;
+  display:block;
+  clear:left;
+  width:95%;
+  overflow:visible;
+}
+
+/* Targets IE 7. Fixes background image in field sets. */
+*:first-child+html fieldset {
+  padding: 0 1em 1em;
+  background-position: 0 0.65em;
+  background-color: transparent;
+}
+
+*:first-child+html fieldset > .description, *:first-child+html fieldset .fieldset-wrapper .description {
+  padding-top: 1em;
+}
+
+fieldset legend {
+  /* Fix disappearing legend in FFox */
+  display: block;
+}
+
+*:first-child+html fieldset legend, *:first-child+html fieldset.collapsed legend {
+  display: inline;
+}
+
+
+html.js fieldset.collapsible{
+margin:5px 0 5px 0;
+display:block;
+float:left;
+}
+
+html.js fieldset.collapsed{
+margin:5px 0 5px 0;
+display:block;
+clear:left; /* avoid fieldset overlapping in ie */
+
+}
+
+
+fieldset ul.clear-block li {
+  margin: 0;
+  padding: 0;
+  background-image: none;
+}
+
+/*teaser checkbox */
+.teaser-checkbox{margin-bottom:10px;}
+
+/*aggregator styles*/
+.feedcontainer{margin-left:0px;margin-bottom:20px; margin-top:20px; position:relative;}
+#primary .singlepage .feedcontainer h2{margin-bottom:-5px; font-size:1.3em;}
+.feedcontainer .feedcontent{border-bottom:1px dashed #ccc;}
+
+#primary .singlepage .feedsummary {border-bottom:1px dashed #ccc;padding-bottom:10px;}
+#primary .singlepage #aggregator h2{font-size:1.3em;}
+#primary .singlepage #aggregator li { /*aggregator list*/
+font-size:0.8em;
+list-style:square;
+margin:3px 0 3px 18px;
+background:none;
+padding:0 0 0 3px;
+}
