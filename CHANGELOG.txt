@@ -1,5 +1,5 @@
 // $Id: CHANGELOG.txt,v 1.173.2.29 2008/10/22 19:25:27 drumm Exp $
-
+ 
 Drupal 5.12, 2008-10-22
 -----------------------
 - fixed security issues, (File inclusion), see SA-2008-067
